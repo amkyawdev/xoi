@@ -21,11 +21,11 @@ async def chat(
         )
         return ChatResponse(
             message=response.get("message", "No response"),
-            conversation_id=response.get("conversation_id") or request.conversation_id
+            conversation_id=response.get("conversation_id") or request.conversation_id or ""
         )
     except Exception as e:
         # Return error as message
         return ChatResponse(
             message=f"Error: {str(e)}",
-            conversation_id=request.conversation_id or "error"
+            conversation_id=request.conversation_id or ""
         )
