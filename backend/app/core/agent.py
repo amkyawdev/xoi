@@ -268,7 +268,7 @@ class ErrorHandler:
         logger.error(f"Agent error ({self.error_count}): {str(error)}", extra=context)
         
         return {
-            "message": "I encountered an error processing your request. Please try again or rephrase your question.",
+            "message": f"Error: {str(error)}",
             "error": str(error),
             "success": False
         }

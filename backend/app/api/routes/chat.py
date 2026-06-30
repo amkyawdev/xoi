@@ -20,8 +20,12 @@ async def chat(
             conversation_id=request.conversation_id
         )
         return ChatResponse(
-            message=response["message"],
-            conversation_id=response["conversation_id"]
+            message=response.get("message", "No response"),
+            conversation_id=response.get("conversation_id") or request.conversation_id
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # Return error as message
+        return ChatResponse(
+            message=f"Error: {str(e)}",
+            conversation_id=request.conversation_id or "error"
+        )
