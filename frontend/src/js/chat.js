@@ -16,6 +16,11 @@ class ChatManager {
         this.loadHistory();
         this.setupEventListeners();
         this.updateSendButton();
+        this.showWelcome();
+    }
+
+    showWelcome() {
+        this.addMessage('bot', 'Hello! I\'m AmkyawDev AI Agent. How can I help you today?');
     }
 
     setupEventListeners() {
@@ -80,7 +85,8 @@ class ChatManager {
             this.saveMessage('ai', response.message);
         } catch (error) {
             this.hideTyping();
-            this.addMessage('ai', `Sorry, I encountered an error: ${error.message}`, true);
+            console.error('Chat error:', error);
+            this.addMessage('ai', `Error: ${error.message || 'Connection failed. Please try again.'}`, true);
         }
     }
 
@@ -190,19 +196,8 @@ class ChatManager {
 
     startNewChat() {
         this.messages = [];
-        this.chatMessages.innerHTML = `
-            <div class="welcome-message">
-                <div class="welcome-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                        <path d="M2 17l10 5 10-5"></path>
-                        <path d="M2 12l10 5 10-5"></path>
-                    </svg>
-                </div>
-                <h3>Welcome to Amkyaw AI</h3>
-                <p>Your intelligent assistant ready to help</p>
-            </div>
-        `;
+        this.chatMessages.innerHTML = '';
+        this.showWelcome();
     }
 
     saveMessage(role, content) {
