@@ -12,6 +12,10 @@
       "dest": "api/index.py"
     }
   ],
+  "buildCommand": "pip install -r requirements.txt",
+  "outputDirectory": ".vercel/output",
+  "installCommand": "pip install -r requirements.txt",
+  "framework": null,
   "env": [
     {
       "key": "PYTHON_VERSION",
