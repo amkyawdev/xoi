@@ -74,6 +74,12 @@ async def list_available_models():
     return {
         "models": [
             {
+                "id": "llama-3.3-70b-versatile",
+                "name": "Llama 3.3 70B (Recommended)",
+                "provider": "Groq",
+                "context_length": 128000
+            },
+            {
                 "id": "qwen/qwen3.6-27b",
                 "name": "Qwen 3.6 27B",
                 "provider": "Groq",

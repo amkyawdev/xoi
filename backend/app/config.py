@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     # AI Service (Groq - Primary)
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
-    AI_MODEL: str = os.getenv("AI_MODEL", "qwen/qwen3.6-27b")
+    AI_MODEL: str = os.getenv("AI_MODEL", "llama-3.3-70b-versatile")
     AI_TEMPERATURE: float = 0.6
     AI_MAX_TOKENS: int = 4096
 
