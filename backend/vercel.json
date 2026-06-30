@@ -16,10 +16,7 @@
   "outputDirectory": ".vercel/output",
   "installCommand": "pip install -r requirements.txt",
   "framework": null,
-  "env": [
-    {
-      "key": "PYTHON_VERSION",
-      "value": "3.11"
-    }
-  ]
+  "env": {
+    "PYTHON_VERSION": "3.11"
+  }
 }
