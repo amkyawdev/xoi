@@ -73,51 +73,65 @@ async def list_available_models():
     """
     return {
         "models": [
+            # Hugging Face Models (Primary)
+            {
+                "id": "meta-llama/Llama-3.3-70B-Instruct",
+                "name": "Llama 3.3 70B Instruct (Recommended)",
+                "provider": "Hugging Face",
+                "context_length": 128000
+            },
+            {
+                "id": "meta-llama/Llama-3.1-8B-Instruct",
+                "name": "Llama 3.1 8B Instruct",
+                "provider": "Hugging Face",
+                "context_length": 128000
+            },
+            {
+                "id": "mistralai/Mistral-7B-Instruct-v0.3",
+                "name": "Mistral 7B Instruct v0.3",
+                "provider": "Hugging Face",
+                "context_length": 32768
+            },
+            {
+                "id": "Qwen/Qwen2.5-72B-Instruct",
+                "name": "Qwen 2.5 72B Instruct",
+                "provider": "Hugging Face",
+                "context_length": 32768
+            },
+            # Groq Models (Fallback)
             {
                 "id": "llama-3.3-70b-versatile",
-                "name": "Llama 3.3 70B (Recommended)",
+                "name": "Llama 3.3 70B (Groq)",
                 "provider": "Groq",
                 "context_length": 128000
             },
             {
                 "id": "qwen/qwen3.6-27b",
-                "name": "Qwen 3.6 27B",
-                "provider": "Groq",
-                "context_length": 32768
-            },
-            {
-                "id": "qwen-3-8b",
-                "name": "Qwen 3 8B",
-                "provider": "Groq",
-                "context_length": 32768
-            },
-            {
-                "id": "qwen-3-32b",
-                "name": "Qwen 3 32B",
-                "provider": "Groq",
-                "context_length": 32768
-            },
-            {
-                "id": "mixtral-8x7b-32768",
-                "name": "Mixtral 8x7B",
+                "name": "Qwen 3.6 27B (Groq)",
                 "provider": "Groq",
                 "context_length": 32768
             },
             {
                 "id": "llama-3.1-70b-versatile",
-                "name": "Llama 3.1 70B",
+                "name": "Llama 3.1 70B (Groq)",
                 "provider": "Groq",
                 "context_length": 128000
             },
             {
                 "id": "llama-3.1-8b-instant",
-                "name": "Llama 3.1 8B",
+                "name": "Llama 3.1 8B (Groq)",
                 "provider": "Groq",
                 "context_length": 128000
             },
             {
+                "id": "mixtral-8x7b-32768",
+                "name": "Mixtral 8x7B (Groq)",
+                "provider": "Groq",
+                "context_length": 32768
+            },
+            {
                 "id": "gemma2-9b-it",
-                "name": "Gemma 2 9B",
+                "name": "Gemma 2 9B (Groq)",
                 "provider": "Groq",
                 "context_length": 8192
             }

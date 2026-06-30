@@ -16,11 +16,16 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
 
-    # AI Service (Groq - Primary)
-    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
-    AI_MODEL: str = os.getenv("AI_MODEL", "llama-3.3-70b-versatile")
+    # AI Service (Hugging Face - Primary)
+    HF_API_KEY: str = os.getenv("HF_API_KEY", "")
+    HF_INFERENCE_ENDPOINT: str = os.getenv("HF_INFERENCE_ENDPOINT", "https://api-inference.huggingface.co/models")
+    AI_MODEL: str = os.getenv("AI_MODEL", "meta-llama/Llama-3.3-70B-Instruct")
     AI_TEMPERATURE: float = 0.6
     AI_MAX_TOKENS: int = 4096
+
+    # AI Service (Groq - Backup)
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
+    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 
     # AI Service (OpenAI - Backup)
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")

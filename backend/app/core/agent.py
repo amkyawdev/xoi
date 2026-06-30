@@ -3,7 +3,7 @@ AI Agent Core for AmkyawDev AI Agent
 =====================================
 
 Components:
-1. LLM Client (Groq API integration)
+1. LLM Client (Hugging Face / Groq integration)
 2. Tool Manager (MCP, RapidAPI, Telegram)
 3. Memory Manager (Conversation history)
 4. Context Builder (System prompt construction)
@@ -83,17 +83,35 @@ class MemoryManager:
             del self.short_term_memory[conversation_id]
 
 
-class GroqClient:
-    """Groq API client for LLM inference"""
+class LLMClient:
+    """
+    Unified LLM Client that supports Hugging Face and Groq
+    Priority: Hugging Face -> Groq (fallback)
+    """
     
     def __init__(self):
-        self.api_key = settings.GROQ_API_KEY
-        self.model = settings.AI_MODEL
+        self.hf_api_key = settings.HF_API_KEY
+        self.groq_api_key = settings.GROQ_API_KEY
+        self.hf_model = settings.AI_MODEL
+        self.groq_model = settings.GROQ_MODEL
         self.temperature = settings.AI_TEMPERATURE
         self.max_tokens = settings.AI_MAX_TOKENS
-        self.top_p = 0.95
-        self.reasoning_effort = "default"
-        self.base_url = "https://api.groq.com/openai/v1"
+        self._hf_client = None
+        self._groq_client = None
+    
+    @property
+    def hf_client(self):
+        if self._hf_client is None and self.hf_api_key:
+            from app.core.hf_client import HuggingFaceClient
+            self._hf_client = HuggingFaceClient()
+        return self._hf_client
+    
+    @property
+    def groq_client(self):
+        if self._groq_client is None and self.groq_api_key:
+            from groq import Groq as GroqLib
+            self._groq_client = GroqLib(api_key=self.groq_api_key)
+        return self._groq_client
     
     async def chat(
         self, 
@@ -101,25 +119,41 @@ class GroqClient:
         tools: Optional[List[Dict]] = None,
         tool_choice: Optional[str] = None
     ) -> Dict[str, Any]:
-        """Send chat completion request to Groq API"""
-        if not self.api_key:
-            return await self._fallback_response(messages)
+        """Send chat completion request - tries Hugging Face first, then Groq"""
         
+        # Try Hugging Face first
+        if self.hf_api_key and self.hf_client:
+            try:
+                response = await self.hf_client.chat(messages, tools, tool_choice)
+                if "error" not in response or not response.get("error", "").startswith("HF_API_KEY"):
+                    return response
+            except Exception as e:
+                logger.warning(f"Hugging Face failed: {str(e)}, trying Groq...")
+        
+        # Try Groq as fallback
+        if self.groq_api_key and self.groq_client:
+            try:
+                return await self._chat_groq(messages, tools, tool_choice)
+            except Exception as e:
+                logger.error(f"Groq also failed: {str(e)}")
+                raise Exception(f"AI services unavailable. Please configure HF_API_KEY or GROQ_API_KEY.")
+        
+        # No API keys configured
+        raise Exception("No AI API key configured. Please set HF_API_KEY or GROQ_API_KEY in environment variables.")
+    
+    async def _chat_groq(
+        self, 
+        messages: List[Dict], 
+        tools: Optional[List[Dict]] = None,
+        tool_choice: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Send chat completion request to Groq API"""
         try:
-            import aiohttp
-            
-            headers = {
-                "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json"
-            }
-            
             payload = {
-                "model": self.model,
+                "model": self.groq_model,
                 "messages": messages,
                 "temperature": self.temperature,
                 "max_tokens": self.max_tokens,
-                "top_p": self.top_p,
-                "reasoning_effort": self.reasoning_effort
             }
             
             if tools:
@@ -127,43 +161,20 @@ class GroqClient:
                 if tool_choice:
                     payload["tool_choice"] = tool_choice
             
-            async with aiohttp.ClientSession() as session:
-                async with session.post(
-                    f"{self.base_url}/chat/completions",
-                    headers=headers,
-                    json=payload,
-                    timeout=aiohttp.ClientTimeout(total=60)
-                ) as response:
-                    if response.status == 200:
-                        data = await response.json()
-                        return self._parse_response(data)
-                    else:
-                        error = await response.text()
-                        logger.error(f"Groq API error: {response.status} - {error}")
-                        return await self._fallback_response(messages)
+            response = self.groq_client.chat.completions.create(**payload)
+            
+            choice = response.choices[0]
+            message = choice.message
+            
+            return {
+                "message": message.content or "",
+                "tool_calls": message.tool_calls,
+                "finish_reason": choice.finish_reason
+            }
                         
         except Exception as e:
             logger.error(f"Groq client error: {str(e)}")
-            return await self._fallback_response(messages)
-    
-    def _parse_response(self, data: Dict) -> Dict[str, Any]:
-        """Parse Groq API response"""
-        choices = data.get("choices", [])
-        if not choices:
-            return {"message": "No response generated", "tool_calls": None}
-        
-        choice = choices[0]
-        message = choice.get("message", {})
-        
-        return {
-            "message": message.get("content", ""),
-            "tool_calls": message.get("tool_calls"),
-            "finish_reason": choice.get("finish_reason")
-        }
-    
-    async def _fallback_response(self, messages: List[Dict]) -> Dict[str, Any]:
-        """Fallback response when Groq is not available"""
-        raise Exception("GROQ_API_KEY not configured. Please set GROQ_API_KEY in environment variables.")
+            raise
 
 
 class ContextBuilder:
@@ -287,7 +298,7 @@ class Agent:
     """
     
     def __init__(self):
-        self.llm_client = GroqClient()
+        self.llm_client = LLMClient()
         self.tool_manager = ToolOrchestrator()
         self.memory_manager = MemoryManager()
         self.context_builder = ContextBuilder()
@@ -339,7 +350,7 @@ class Agent:
                 tools=tools if tools else None
             )
             
-            # Handle tool calls if present
+            # Handle tool calls if present (only for Groq)
             tools_used = []
             iteration = 0
             
