@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     # RapidAPI (optional)
     RAPIDAPI_KEY: str = os.getenv("RAPIDAPI_KEY", "")
 
+    # YouTube API (optional)
+    YOUTUBE_API_KEY: str = os.getenv("YOUTUBE_API_KEY", "")
+
     # Browserless MCP (optional)
     BROWSERLESS_API_KEY: str = os.getenv("BROWSERLESS_API_KEY", "")
 

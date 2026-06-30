@@ -2,6 +2,7 @@ from typing import Dict, List, Any, Optional
 from app.core.mcp_client import MCPClient
 from app.core.rapidapi_client import RapidAPIClient
 from app.core.telegram_client import TelegramClient
+from app.core.social_client import SocialMediaClient
 from app.config import settings
 
 class ToolOrchestrator:
@@ -9,6 +10,7 @@ class ToolOrchestrator:
         self.mcp_client = MCPClient() if settings.BROWSERLESS_API_KEY else None
         self.rapidapi_client = RapidAPIClient() if settings.RAPIDAPI_KEY else None
         self.telegram_client = TelegramClient() if settings.TELEGRAM_BOT_TOKEN else None
+        self.social_client = SocialMediaClient()
         self.available_tools = self._get_available_tools()
 
     def _get_available_tools(self) -> List[Dict[str, Any]]:
@@ -27,6 +29,53 @@ class ToolOrchestrator:
                 "name": "code_executor",
                 "description": "Execute code snippets",
                 "enabled": True
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "search_social_media",
+                    "description": "Search for content across TikTok, YouTube, and Facebook",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "Search query"},
+                            "platforms": {
+                                "type": "array",
+                                "items": {"type": "string", "enum": ["tiktok", "youtube", "facebook"]},
+                                "description": "Platforms to search (default: all)"
+                            }
+                        },
+                        "required": ["query"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_tiktok_video",
+                    "description": "Get TikTok video data by video ID",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "video_id": {"type": "string", "description": "TikTok video ID"}
+                        },
+                        "required": ["video_id"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_youtube_video",
+                    "description": "Get YouTube video data by video ID",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "video_id": {"type": "string", "description": "YouTube video ID"}
+                        },
+                        "required": ["video_id"]
+                    }
+                }
             }
         ]
 
@@ -67,6 +116,15 @@ class ToolOrchestrator:
                 parameters.get("code", ""),
                 parameters.get("language", "python")
             )
+        elif tool_name == "search_social_media":
+            return await self._search_social_media(
+                query=parameters.get("query", ""),
+                platforms=parameters.get("platforms")
+            )
+        elif tool_name == "get_tiktok_video":
+            return await self._get_tiktok_video(parameters.get("video_id", ""))
+        elif tool_name == "get_youtube_video":
+            return await self._get_youtube_video(parameters.get("video_id", ""))
         elif tool_name == "browser_automation":
             return await self._browser_action(parameters)
         elif tool_name == "rapidapi":
@@ -90,6 +148,35 @@ class ToolOrchestrator:
             "results": [],
             "message": "Web search not configured. Please set RAPIDAPI_KEY."
         }
+
+    async def _search_social_media(self, query: str, platforms: List[str] = None) -> Dict[str, Any]:
+        """Search across multiple social media platforms"""
+        try:
+            results = await self.social_client.search_social(query=query, platforms=platforms)
+            return {
+                "query": query,
+                "platforms": platforms or ["tiktok", "youtube", "facebook"],
+                "results": [r.model_dump() for r in results],
+                "count": len(results)
+            }
+        except Exception as e:
+            return {"error": str(e), "query": query}
+
+    async def _get_tiktok_video(self, video_id: str) -> Dict[str, Any]:
+        """Get TikTok video data"""
+        try:
+            result = await self.social_client.get_tiktok_video(video_id)
+            return result
+        except Exception as e:
+            return {"error": str(e), "video_id": video_id}
+
+    async def _get_youtube_video(self, video_id: str) -> Dict[str, Any]:
+        """Get YouTube video data"""
+        try:
+            result = await self.social_client.get_youtube_video(video_id)
+            return result
+        except Exception as e:
+            return {"error": str(e), "video_id": video_id}
 
     def _calculate(self, expression: str) -> Dict[str, Any]:
         try:
@@ -155,6 +242,6 @@ class ToolOrchestrator:
 
     def get_tool_by_name(self, name: str) -> Optional[Dict[str, Any]]:
         for tool in self.available_tools:
-            if tool["name"] == name:
+            if tool.get("name") == name or tool.get("function", {}).get("name") == name:
                 return tool
         return None
