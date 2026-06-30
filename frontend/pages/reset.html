@@ -34,9 +34,11 @@
                                 </div>
                             </div>
                             
-                            <button type="submit" class="btn btn-primary w-100 py-2 rounded-3">
-                                <svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg> Send Reset Link
+                            <button type="submit" class="btn btn-primary w-100 py-2 rounded-3" id="resetBtn">
+                                <span id="resetText">Send Reset Link</span>
                             </button>
+                            <div id="resetError" class="alert alert-danger mt-3 d-none"></div>
+                            <div id="resetSuccess" class="alert alert-success mt-3 d-none">Password reset link sent! Check your email.</div>
                         </form>
                         
                         <p class="text-center mt-4 mb-0">
@@ -52,21 +54,35 @@
     <script src="../src/js/utils.js"></script>
     <script src="../src/js/auth.js"></script>
     <script>
-        // Initialize reset form handling
         document.addEventListener('DOMContentLoaded', () => {
             const resetForm = document.getElementById('resetForm');
+            const resetBtn = document.getElementById('resetBtn');
+            const resetError = document.getElementById('resetError');
+            const resetSuccess = document.getElementById('resetSuccess');
+            
             if (resetForm) {
                 resetForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
+                    resetError.classList.add('d-none');
+                    resetSuccess.classList.add('d-none');
+                    resetBtn.disabled = true;
+                    
                     const email = document.getElementById('email').value;
                     
                     try {
                         const result = await window.auth.resetPassword(email);
                         if (result.success) {
-                            alert('Password reset link sent! Check your email.');
+                            resetSuccess.classList.remove('d-none');
+                        } else {
+                            resetError.textContent = result.error || 'Email not found';
+                            resetError.classList.remove('d-none');
                         }
                     } catch (error) {
                         console.error('Reset error:', error);
+                        resetError.textContent = 'Connection error. Please try again.';
+                        resetError.classList.remove('d-none');
+                    } finally {
+                        resetBtn.disabled = false;
                     }
                 });
             }
