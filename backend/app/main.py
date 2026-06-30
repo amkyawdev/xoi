@@ -1,7 +1,11 @@
 import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routes import chat, auth, history, settings, upload
+from app.api.routes.auth import router as auth_router
+from app.api.routes.chat import router as chat_router
+from app.api.routes.history import router as history_router
+from app.api.routes.settings import router as settings_router
+from app.api.routes.upload import router as upload_router
 from app.api.routes.chat_stream import router as chat_stream_router
 from app.utils.error_handlers import setup_error_handlers
 from app.config import settings
@@ -40,12 +44,12 @@ app.add_middleware(
 setup_error_handlers(app)
 
 # Include routers
-app.include_router(chat.router, prefix="/api", tags=["chat"])
+app.include_router(chat_router, prefix="/api", tags=["chat"])
 app.include_router(chat_stream_router, prefix="/api", tags=["chat-stream"])
-app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
-app.include_router(history.router, prefix="/api", tags=["history"])
-app.include_router(settings.router, prefix="/api", tags=["settings"])
-app.include_router(upload.router, prefix="/api", tags=["upload"])
+app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
+app.include_router(history_router, prefix="/api", tags=["history"])
+app.include_router(settings_router, prefix="/api", tags=["settings"])
+app.include_router(upload_router, prefix="/api", tags=["upload"])
 
 
 @app.on_event("startup")
