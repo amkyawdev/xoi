@@ -1,7 +1,7 @@
 // Utility functions for Amkyaw AI Agent
 
-// API Configuration
-const BASE_API_URL = window.location.origin; // Use current origin for API calls
+// API Configuration - Use relative paths for same-origin deployment
+const BASE_API_URL = ''; // Empty for relative API calls
 
 const Utils = {
     // Debounce function

@@ -1,0 +1,56 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/api/index.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "frontend/pages/**/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "frontend/src/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "frontend/public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/api/index.py"
+    },
+    {
+      "src": "/docs",
+      "dest": "/frontend/pages/docs.html"
+    },
+    {
+      "src": "/skills",
+      "dest": "/frontend/pages/skills.html"
+    },
+    {
+      "src": "/login",
+      "dest": "/frontend/pages/login.html"
+    },
+    {
+      "src": "/register",
+      "dest": "/frontend/pages/register.html"
+    },
+    {
+      "src": "/reset",
+      "dest": "/frontend/pages/reset.html"
+    },
+    {
+      "src": "/about",
+      "dest": "/frontend/pages/about.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/pages/$1"
+    }
+  ],
+  "framework": null
+}
