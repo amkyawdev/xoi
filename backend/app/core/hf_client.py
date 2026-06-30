@@ -31,12 +31,16 @@ class HuggingFaceClient:
         tool_choice: Optional[str] = None
     ) -> Dict[str, Any]:
         """Send chat completion request to Hugging Face Inference API"""
+        logger.info(f"HF_API_KEY set: {bool(self.api_key)}")
+        logger.info(f"HF Model: {self.model}")
+        
         if not self.api_key:
-            return await self._fallback_response(messages)
+            raise Exception("HF_API_KEY not configured")
         
         try:
             # Convert messages to conversation format
             prompt = self._build_prompt(messages)
+            logger.info(f"Prompt length: {len(prompt)}")
             
             headers = {
                 "Authorization": f"Bearer {self.api_key}",
@@ -53,39 +57,47 @@ class HuggingFaceClient:
                 }
             }
             
+            api_url = f"{self.base_url}/{self.model}"
+            logger.info(f"Calling HF API: {api_url}")
+            
             async with aiohttp.ClientSession() as session:
                 async with session.post(
-                    f"{self.base_url}/{self.model}",
+                    api_url,
                     headers=headers,
                     json=payload,
                     timeout=aiohttp.ClientTimeout(total=120)
                 ) as response:
-                    if response.status == 200:
+                    status = response.status
+                    logger.info(f"HF API response status: {status}")
+                    
+                    if status == 200:
                         data = await response.json()
                         return self._parse_response(data)
-                    elif response.status == 503:
-                        # Model is loading
-                        error_data = await response.json()
-                        error_msg = error_data.get("error", "")
-                        if "loading" in error_msg.lower():
-                            return {
-                                "message": "Model is loading. Please try again in a few seconds.",
-                                "tool_calls": None,
-                                "loading": True
-                            }
-                        logger.error(f"HF API error: {response.status} - {error_msg}")
-                        return await self._fallback_response(messages)
                     else:
                         error = await response.text()
-                        logger.error(f"HF API error: {response.status} - {error}")
-                        return await self._fallback_response(messages)
+                        logger.error(f"HF API error {status}: {error[:500]}")
+                        
+                        if status == 503:
+                            try:
+                                error_data = await response.json()
+                                error_msg = error_data.get("error", "")
+                                if "loading" in error_msg.lower():
+                                    return {
+                                        "message": "Model is loading. Please try again.",
+                                        "tool_calls": None,
+                                        "loading": True
+                                    }
+                            except:
+                                pass
+                        
+                        raise Exception(f"Hugging Face API error {status}: {error[:200]}")
                         
         except aiohttp.ClientError as e:
             logger.error(f"Hugging Face client error: {str(e)}")
-            return await self._fallback_response(messages)
+            raise Exception(f"Hugging Face connection error: {str(e)}")
         except Exception as e:
-            logger.error(f"HF unexpected error: {str(e)}")
-            return await self._fallback_response(messages)
+            logger.error(f"HF error: {str(e)}")
+            raise
     
     def _build_prompt(self, messages: List[Dict]) -> str:
         """Build prompt from messages for text generation models"""

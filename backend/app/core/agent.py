@@ -121,25 +121,40 @@ class LLMClient:
     ) -> Dict[str, Any]:
         """Send chat completion request - tries Hugging Face first, then Groq"""
         
+        logger.info(f"LLMClient - HF_API_KEY: {bool(self.hf_api_key)}, GROQ_API_KEY: {bool(self.groq_api_key)}")
+        
         # Try Hugging Face first
         if self.hf_api_key and self.hf_client:
             try:
+                logger.info("Trying Hugging Face API...")
                 response = await self.hf_client.chat(messages, tools, tool_choice)
-                if "error" not in response or not response.get("error", "").startswith("HF_API_KEY"):
-                    return response
+                logger.info(f"HF response received: {type(response)}")
+                return response
             except Exception as e:
-                logger.warning(f"Hugging Face failed: {str(e)}, trying Groq...")
+                error_msg = str(e)
+                logger.warning(f"Hugging Face failed: {error_msg}")
+                
+                # If HF fails, try Groq as fallback
+                if self.groq_api_key and self.groq_client:
+                    try:
+                        logger.info("Trying Groq as fallback...")
+                        return await self._chat_groq(messages, tools, tool_choice)
+                    except Exception as groq_error:
+                        logger.error(f"Groq also failed: {str(groq_error)}")
+                        raise Exception(f"AI services unavailable. HF: {error_msg[:100]}")
+                
+                raise Exception(f"Hugging Face failed: {error_msg[:200]}")
         
-        # Try Groq as fallback
+        # Try Groq if no HF key
         if self.groq_api_key and self.groq_client:
             try:
                 return await self._chat_groq(messages, tools, tool_choice)
             except Exception as e:
-                logger.error(f"Groq also failed: {str(e)}")
-                raise Exception(f"AI services unavailable. Please configure HF_API_KEY or GROQ_API_KEY.")
+                logger.error(f"Groq failed: {str(e)}")
+                raise Exception(f"AI services unavailable. Groq error: {str(e)}")
         
         # No API keys configured
-        raise Exception("No AI API key configured. Please set HF_API_KEY or GROQ_API_KEY in environment variables.")
+        raise Exception("No AI API key configured. Please set HF_API_KEY or GROQ_API_KEY.")
     
     async def _chat_groq(
         self, 
