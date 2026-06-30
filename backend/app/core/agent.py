@@ -163,48 +163,7 @@ class GroqClient:
     
     async def _fallback_response(self, messages: List[Dict]) -> Dict[str, Any]:
         """Fallback response when Groq is not available"""
-        last_message = ""
-        for m in reversed(messages):
-            if m.get("role") == "user":
-                last_message = m.get("content", "")
-                break
-        
-        message_lower = last_message.lower()
-        
-        if any(g in message_lower for g in ["hello", "hi", "hey"]):
-            response = "Hello! I'm AmkyawDev AI Agent, your intelligent assistant. How can I help you today?"
-        elif "how are you" in message_lower:
-            response = "I'm doing great, thank you! I'm here and ready to assist you with any task. What would you like help with?"
-        elif "thank" in message_lower:
-            response = "You're welcome! Is there anything else I can help you with?"
-        elif any(g in message_lower for g in ["bye", "goodbye"]):
-            response = "Goodbye! Feel free to return anytime you need assistance. Have a wonderful day!"
-        elif "help" in message_lower:
-            response = """I can help you with various tasks:
-
-- Answering questions on any topic
-- Writing and editing content
-- Code assistance and debugging
-- Research and information retrieval
-- File operations
-- Web search and analysis
-- And much more!
-
-Just let me know what you need!"""
-        else:
-            response = f"""I received your message: "{last_message[:100]}..."
-
-I'm currently running in demo mode. For full AI capabilities, please configure the GROQ_API_KEY environment variable.
-
-In production mode, I can provide:
-- Intelligent responses using Groq's LLM models
-- Tool execution (web search, code execution, etc.)
-- File operations and analysis
-- Multi-turn conversations
-
-How can I assist you?"""
-        
-        return {"message": response, "tool_calls": None}
+        raise Exception("GROQ_API_KEY not configured. Please set GROQ_API_KEY in environment variables.")
 
 
 class ContextBuilder:
