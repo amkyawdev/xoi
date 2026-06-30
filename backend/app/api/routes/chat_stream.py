@@ -73,35 +73,35 @@ async def list_available_models():
     """
     return {
         "models": [
-            # Hugging Face Models (Primary)
+            # Hugging Face Models (Free Tier)
             {
-                "id": "meta-llama/Llama-3.3-70B-Instruct",
-                "name": "Llama 3.3 70B Instruct (Recommended)",
-                "provider": "Hugging Face",
-                "context_length": 128000
-            },
-            {
-                "id": "meta-llama/Llama-3.1-8B-Instruct",
-                "name": "Llama 3.1 8B Instruct",
-                "provider": "Hugging Face",
-                "context_length": 128000
+                "id": "Qwen/Qwen2.5-7B-Instruct",
+                "name": "Qwen 2.5 7B Instruct (Recommended)",
+                "provider": "Hugging Face (Free)",
+                "context_length": 32768
             },
             {
                 "id": "mistralai/Mistral-7B-Instruct-v0.3",
                 "name": "Mistral 7B Instruct v0.3",
-                "provider": "Hugging Face",
+                "provider": "Hugging Face (Free)",
                 "context_length": 32768
             },
             {
-                "id": "Qwen/Qwen2.5-72B-Instruct",
-                "name": "Qwen 2.5 72B Instruct",
-                "provider": "Hugging Face",
-                "context_length": 32768
+                "id": "meta-llama/Llama-3.1-8B-Instruct",
+                "name": "Llama 3.1 8B Instruct",
+                "provider": "Hugging Face (Free)",
+                "context_length": 128000
             },
-            # Groq Models (Fallback)
+            {
+                "id": "microsoft/Phi-3-mini-128k-instruct",
+                "name": "Phi-3 Mini 128K",
+                "provider": "Hugging Face (Free)",
+                "context_length": 128000
+            },
+            # Groq Models (Fast)
             {
                 "id": "llama-3.3-70b-versatile",
-                "name": "Llama 3.3 70B (Groq)",
+                "name": "Llama 3.3 70B (Groq - Fast)",
                 "provider": "Groq",
                 "context_length": 128000
             },

@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     # AI Service (Hugging Face - Primary)
     HF_API_KEY: str = os.getenv("HF_API_KEY", "")
     HF_INFERENCE_ENDPOINT: str = os.getenv("HF_INFERENCE_ENDPOINT", "https://api-inference.huggingface.co/models")
-    AI_MODEL: str = os.getenv("AI_MODEL", "Qwen/Qwen2.5-72B-Instruct")
+    AI_MODEL: str = os.getenv("AI_MODEL", "Qwen/Qwen2.5-7B-Instruct")
     AI_TEMPERATURE: float = 0.6
     AI_MAX_TOKENS: int = 4096
 
