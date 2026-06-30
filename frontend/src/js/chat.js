@@ -4,10 +4,10 @@ class ChatManager {
     constructor() {
         this.messages = [];
         this.isLoading = false;
-        this.chatMessages = document.getElementById('chatMessages');
+        this.chatMessages = document.getElementById('chat-messages');
         this.chatInput = document.getElementById('chatInput');
         this.sendBtn = document.getElementById('sendBtn');
-        this.newChatBtn = document.getElementById('newChatBtn');
+        this.newChatBtn = document.getElementById('new-chat-btn');
         
         this.init();
     }
@@ -97,8 +97,8 @@ class ChatManager {
         messageDiv.className = `message ${role === 'user' ? 'user' : 'bot'}${isError ? ' error' : ''}`;
         
         const avatar = role === 'ai' || role === 'bot'
-            ? '<img src="../public/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />'
-            : '<img src="../public/images/user.png" alt="User" width="36" height="36" class="rounded-circle flex-shrink-0" />';
+            ? '<img src="../../public/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />'
+            : '<img src="../../public/images/user.png" alt="User" width="36" height="36" class="rounded-circle flex-shrink-0" />';
 
         messageDiv.innerHTML = `
             ${avatar}
@@ -161,7 +161,7 @@ class ChatManager {
         typingDiv.className = 'message bot';
         typingDiv.id = 'typingIndicator';
         typingDiv.innerHTML = `
-            <img src="/public/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />
+            <img src="../../public/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />
             <div class="message-content">
                 <div class="typing-indicator">
                     <div class="typing-dot"></div>

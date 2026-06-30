@@ -1,5 +1,8 @@
 // Utility functions for Amkyaw AI Agent
 
+// API Configuration
+const BASE_API_URL = window.location.origin; // Use current origin for API calls
+
 const Utils = {
     // Debounce function
     debounce(func, wait) {
@@ -112,6 +115,9 @@ const Utils = {
 
     // API request wrapper
     async apiRequest(url, options = {}) {
+        // Prepend BASE_API_URL if url doesn't start with http
+        const apiUrl = url.startsWith('http') ? url : `${BASE_API_URL}${url}`;
+        
         const defaultOptions = {
             headers: {
                 'Content-Type': 'application/json',
@@ -130,7 +136,7 @@ const Utils = {
         }
 
         try {
-            const response = await fetch(url, config);
+            const response = await fetch(apiUrl, config);
             const data = await response.json();
             
             if (!response.ok) {
