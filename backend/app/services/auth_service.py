@@ -42,30 +42,7 @@ init_db()
 
 class AuthService:
     def __init__(self):
-        self._ensure_demo_user()
-
-    def _ensure_demo_user(self):
-        """Ensure demo user exists in database."""
-        if not SessionLocal:
-            return
-        
-        db = SessionLocal()
-        try:
-            demo = db.query(User).filter(User.email == "demo@example.com").first()
-            if not demo:
-                demo_user = User(
-                    id="demo-user-id",
-                    name="Demo User",
-                    email="demo@example.com",
-                    password_hash=pwd_context.hash("demo123")
-                )
-                db.add(demo_user)
-                db.commit()
-        except Exception as e:
-            db.rollback()
-            print(f"Error ensuring demo user: {e}")
-        finally:
-            db.close()
+        pass
 
     def hash_password(self, password: str) -> str:
         return pwd_context.hash(password)
