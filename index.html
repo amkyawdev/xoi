@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AmkyawDev AI Agent - Loading</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    <style>
+        /* ===== Global Reset ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ===== Animated Background Particles ===== */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            animation: floatParticle 15s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ===== Loading Container ===== */
+        .loading-container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* ===== Logo Animation ===== */
+        .logo-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+        }
+
+        .logo-ring {
+            position: absolute;
+            inset: -10px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #818cf8;
+            border-right-color: #6366f1;
+            animation: spinRing 2s linear infinite;
+        }
+
+        .logo-ring:nth-child(2) {
+            inset: -20px;
+            border-top-color: #a78bfa;
+            border-right-color: #8b5cf6;
+            animation-duration: 3s;
+            animation-direction: reverse;
+        }
+
+        @keyframes spinRing {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 0 60px rgba(99, 102, 241, 0.2);
+            animation: pulseGlow 2s ease-in-out infinite;
+            background: #1e293b;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 40px rgba(99, 102, 241, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 80px rgba(99, 102, 241, 0.4);
+            }
+        }
+
+        /* ===== Title ===== */
+        .brand-title {
+            color: #f8fafc;
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-title .highlight {
+            background: linear-gradient(135deg, #818cf8, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-subtitle {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        /* ===== Loading Spinner ===== */
+        .spinner-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 4px solid rgba(99, 102, 241, 0.15);
+            border-top-color: #818cf8;
+            animation: spinSpinner 0.8s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite;
+        }
+
+        @keyframes spinSpinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .loading-text .dots::after {
+            content: '';
+            animation: dotsAnimation 1.5s infinite;
+        }
+
+        @keyframes dotsAnimation {
+            0% { content: ''; }
+            33% { content: '.'; }
+            66% { content: '..'; }
+            100% { content: '...'; }
+        }
+
+        /* ===== Progress Bar ===== */
+        .progress-wrapper {
+            width: 100%;
+            max-width: 320px;
+            margin: 1.5rem auto 0;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(99, 102, 241, 0.15);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #818cf8, #a78bfa, #c084fc);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            animation: progressAnimation 3s ease-in-out forwards;
+        }
+
+        @keyframes progressAnimation {
+            0% { width: 0%; }
+            20% { width: 15%; }
+            40% { width: 35%; }
+            60% { width: 55%; }
+            80% { width: 75%; }
+            95% { width: 92%; }
+            100% { width: 100%; }
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: #64748b;
+            letter-spacing: 0.3px;
+        }
+
+        .progress-label .percentage {
+            color: #a78bfa;
+            font-weight: 600;
+        }
+
+        /* ===== Loading Steps ===== */
+        .steps-container {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: left;
+            max-width: 280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #64748b;
+            font-size: 0.8rem;
+            transition: all 0.5s ease;
+            opacity: 0.4;
+        }
+
+        .step-item.active {
+            color: #e2e8f0;
+            opacity: 1;
+        }
+
+        .step-item .step-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 0.7rem;
+        }
+
+        .step-item.active .step-icon {
+            color: #818cf8;
+        }
+
+        .step-item .step-check {
+            display: none;
+            color: #34d399;
+        }
+
+        .step-item.done .step-check {
+            display: inline;
+        }
+
+        .step-item.done .step-icon {
+            display: none;
+        }
+
+        .step-item.done {
+            color: #94a3b8;
+            opacity: 0.7;
+        }
+
+        /* ===== Version Footer ===== */
+        .version-footer {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #475569;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+            z-index: 1;
+        }
+
+        .version-footer span {
+            color: #6366f1;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 480px) {
+            .brand-title {
+                font-size: 1.5rem;
+            }
+            .logo-wrapper {
+                width: 90px;
+                height: 90px;
+            }
+            .steps-container {
+                max-width: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== Animated Background Particles ===== -->
+    <div class="particles" id="particles"></div>
+
+    <!-- ===== Loading Container ===== -->
+    <div class="loading-container">
+
+        <!-- Logo -->
+        <div class="logo-wrapper">
+            <div class="logo-ring"></div>
+            <div class="logo-ring"></div>
+            <img 
+                src="/public/images/admin.png" 
+                alt="AmkyawDev AI" 
+                class="logo-image"
+                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22 font-weight=%22bold%22%3EA%3C/text%3E%3C/svg%3E'"
+            />
+        </div>
+
+        <!-- Title -->
+        <h1 class="brand-title">
+            Amkyaw<span class="highlight">Dev</span> AI
+        </h1>
+        <p class="brand-subtitle">Intelligent Agent · Powered by Groq</p>
+
+        <!-- Spinner -->
+        <div class="spinner-wrapper">
+            <div class="spinner"></div>
+            <span class="loading-text">
+                Loading<span class="dots"></span>
+            </span>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-wrapper">
+            <div class="progress-track">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-label">
+                <span>Initializing</span>
+                <span class="percentage" id="progressPercentage">0%</span>
+            </div>
+        </div>
+
+        <!-- Loading Steps -->
+        <div class="steps-container" id="stepsContainer">
+            <div class="step-item active" data-step="0">
+                <span class="step-icon"><i class="fas fa-circle"></i></span>
+                <span class="step-check"><i class="fas fa-check-circle"></i></span>
+                <span>Connecting to AI Engine...</span>
+            </div>
+            <div class="step-item" data-step="1">
+                <span class="step-icon"><i class="fas fa-circle"></i></span>
+                <span class="step-check"><i class="fas fa-check-circle"></i></span>
+                <span>Loading Skills Framework...</span>
+            </div>
+            <div class="step-item" data-step="2">
+                <span class="step-icon"><i class="fas fa-circle"></i></span>
+                <span class="step-check"><i class="fas fa-check-circle"></i></span>
+                <span>Initializing Tools & MCP...</span>
+            </div>
+            <div class="step-item" data-step="3">
+                <span class="step-icon"><i class="fas fa-circle"></i></span>
+                <span class="step-check"><i class="fas fa-check-circle"></i></span>
+                <span>Warming up AI Model...</span>
+            </div>
+            <div class="step-item" data-step="4">
+                <span class="step-icon"><i class="fas fa-circle"></i></span>
+                <span class="step-check"><i class="fas fa-check-circle"></i></span>
+                <span>Ready! Redirecting...</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== Version Footer ===== -->
+    <div class="version-footer">
+        v1.0.0 · <span>✦</span> · Made with <i class="fas fa-heart" style="color:#ef4444;font-size:0.6rem;"></i> by AmkyawDev
+    </div>
+
+    <!-- ===== Script ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ===== Particles Generation =====
+            function createParticles() {
+                const container = document.getElementById('particles');
+                const count = 50;
+                for (let i = 0; i < count; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.width = (Math.random() * 4 + 2) + 'px';
+                    particle.style.height = particle.style.width;
+                    particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                    particle.style.animationDelay = (Math.random() * 10) + 's';
+                    particle.style.opacity = Math.random() * 0.4 + 0.1;
+                    container.appendChild(particle);
+                }
+            }
+            createParticles();
+
+            // ===== Loading Simulation =====
+            const steps = document.querySelectorAll('.step-item');
+            const progressBar = document.getElementById('progressBar');
+            const progressPercentage = document.getElementById('progressPercentage');
+
+            let currentStep = 0;
+            let progress = 0;
+
+            function updateProgress(value) {
+                progress = Math.min(value, 100);
+                progressBar.style.width = progress + '%';
+                progressPercentage.textContent = Math.round(progress) + '%';
+            }
+
+            function activateStep(index) {
+                steps.forEach((el, i) => {
+                    el.classList.remove('active', 'done');
+                    if (i < index) {
+                        el.classList.add('done');
+                    } else if (i === index) {
+                        el.classList.add('active');
+                    }
+                });
+            }
+
+            function simulateLoading() {
+                const totalSteps = steps.length;
+                const stepDuration = 800; // ms per step
+                const totalDuration = totalSteps * stepDuration + 500;
+
+                const startTime = Date.now();
+
+                function tick() {
+                    const elapsed = Date.now() - startTime;
+                    const rawProgress = (elapsed / totalDuration) * 100;
+                    const clampedProgress = Math.min(rawProgress, 100);
+
+                    updateProgress(clampedProgress);
+
+                    // Update step based on progress
+                    const stepIndex = Math.min(
+                        Math.floor((clampedProgress / 100) * totalSteps),
+                        totalSteps - 1
+                    );
+
+                    if (stepIndex !== currentStep) {
+                        currentStep = stepIndex;
+                        activateStep(stepIndex);
+                    }
+
+                    if (clampedProgress < 100) {
+                        requestAnimationFrame(tick);
+                    } else {
+                        // All steps done
+                        steps.forEach(el => {
+                            el.classList.remove('active');
+                            el.classList.add('done');
+                        });
+                        // Redirect to main chat page
+                        setTimeout(function() {
+                            window.location.href = '/home.html';
+                        }, 600);
+                    }
+                }
+
+                requestAnimationFrame(tick);
+            }
+
+            // Start loading simulation
+            setTimeout(simulateLoading, 300);
+        })();
+    </script>
+
+</body>
+  </html>
