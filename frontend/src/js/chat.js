@@ -94,14 +94,14 @@ class ChatManager {
 
     addMessage(role, content, isError = false) {
         const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${role}${isError ? ' error' : ''}`;
+        messageDiv.className = `message ${role === 'user' ? 'user' : 'bot'}${isError ? ' error' : ''}`;
         
-        const avatar = role === 'ai' 
-            ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>'
-            : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>';
+        const avatar = role === 'ai' || role === 'bot'
+            ? '<img src="/public/images/admin.png" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />'
+            : '<img src="/public/images/user.png" alt="User" width="36" height="36" class="rounded-circle flex-shrink-0" />';
 
         messageDiv.innerHTML = `
-            <div class="message-avatar">${avatar}</div>
+            ${avatar}
             <div class="message-content">${this.formatContent(content)}</div>
         `;
 
@@ -137,17 +137,31 @@ class ChatManager {
         this.isLoading = true;
         this.updateSendButton();
         
+        // Show loading overlay
+        const overlay = document.getElementById('loadingOverlay');
+        const animationEl = document.getElementById('loadingAnimation');
+        const textEl = document.getElementById('loadingText');
+        
+        if (overlay && animationEl) {
+            // Set thinking animation
+            animationEl.innerHTML = `
+                <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="20" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.3"/>
+                    <path d="M24 8C15.163 8 8 15.163 8 24" stroke="#2563eb" stroke-width="2" stroke-linecap="round">
+                        <animateTransform attributeName="transform" type="rotate" from="0 24 24" to="360 24 24" dur="1s" repeatCount="indefinite"/>
+                    </path>
+                </svg>
+            `;
+            if (textEl) textEl.textContent = 'Thinking...';
+            overlay.classList.add('show');
+        }
+        
+        // Also show typing in chat
         const typingDiv = document.createElement('div');
-        typingDiv.className = 'message ai';
+        typingDiv.className = 'message bot';
         typingDiv.id = 'typingIndicator';
         typingDiv.innerHTML = `
-            <div class="message-avatar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                    <path d="M2 17l10 5 10-5"></path>
-                    <path d="M2 12l10 5 10-5"></path>
-                </svg>
-            </div>
+            <img src="/public/images/admin.png" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />
             <div class="message-content">
                 <div class="typing-indicator">
                     <div class="typing-dot"></div>
@@ -165,6 +179,11 @@ class ChatManager {
         this.isLoading = false;
         this.updateSendButton();
         
+        // Hide loading overlay
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) overlay.classList.remove('show');
+        
+        // Remove typing indicator from chat
         const typing = document.getElementById('typingIndicator');
         if (typing) typing.remove();
     }
