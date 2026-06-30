@@ -52,8 +52,5 @@
       "dest": "/frontend/pages/$1"
     }
   ],
-  "buildCommand": "cd backend && pip install -r requirements.txt",
-  "outputDirectory": ".vercel/output",
-  "installCommand": "cd backend && pip install -r requirements.txt",
   "framework": null
 }
