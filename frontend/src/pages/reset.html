@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password - Amkyaw AI</title>
+    <link rel="icon" href="/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="logo">Amkyaw</h1>
+                <p>Reset your password</p>
+            </div>
+
+            <form class="auth-form" id="resetForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+
+                <button type="submit" class="auth-btn">Send Reset Link</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Remember your password? <a href="/src/pages/login.html">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/src/js/utils.js"></script>
+    <script src="/src/js/auth.js"></script>
+    <script>
+        document.getElementById('resetForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            const btn = this.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            
+            const result = await window.auth.resetPassword(email);
+            
+            btn.disabled = false;
+            btn.textContent = 'Send Reset Link';
+            
+            if (result.success) {
+                setTimeout(() => {
+                    window.location.href = '/src/pages/login.html';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>
