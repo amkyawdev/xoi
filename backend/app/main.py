@@ -39,6 +39,7 @@ app.add_middleware(
         "http://localhost:8000",
         "https://work-1-vlsuqhsmaasxdyuc.prod-runtime.all-hands.dev",
         "https://work-2-vlsuqhsmaasxdyuc.prod-runtime.all-hands.dev",
+        "https://xoi-ai.vercel.app",
         "https://xoi-nine.vercel.app",
         "*"  # Allow all in development
     ],

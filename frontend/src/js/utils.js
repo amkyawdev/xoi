@@ -1,18 +1,9 @@
 // Utility functions for Amkyaw AI Agent
 
-// API Configuration - Point to backend URL (dynamic based on environment)
-const BASE_API_URL = (function() {
-    // Check for Vercel deployment
-    if (typeof window !== 'undefined') {
-        // Use current origin in production, fallback to vercel
-        const vercelUrl = window.location.hostname;
-        if (vercelUrl.includes('vercel.app')) {
-            return `https://${vercelUrl}`;
-        }
-    }
-    // Default to local development or known production URL
-    return 'https://xoi-nine.vercel.app';
-})();
+// API Configuration - Point to backend URL
+// Frontend: xoi-ai.vercel.app
+// Backend: xoi-nine.vercel.app
+const BASE_API_URL = 'https://xoi-nine.vercel.app';
 
 const Utils = {
     // Debounce function
