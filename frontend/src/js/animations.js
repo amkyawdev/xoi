@@ -4,15 +4,15 @@ const Animations = {
     // Animation states
     currentAnimation: 'thinking',
     
-    // Animation SVG paths
+    // Animation SVG paths (relative to frontend root)
     animations: {
-        thinking: '/images/animations/thinking.svg',
-        reading: '/images/animations/reading.svg',
-        search: '/images/animations/search.svg',
-        waiting: '/images/animations/waiting.svg',
-        typing: '/images/animations/typing.svg',
-        processing: '/images/animations/processing.svg',
-        success: '/images/animations/success.svg'
+        thinking: '../public/images/animations/thinking.svg',
+        reading: '../public/images/animations/reading.svg',
+        search: '../public/images/animations/search.svg',
+        waiting: '../public/images/animations/waiting.svg',
+        typing: '../public/images/animations/typing.svg',
+        processing: '../public/images/animations/processing.svg',
+        success: '../public/images/animations/success.svg'
     },
 
     // Initialize staggered animations
@@ -306,8 +306,3 @@ const Animations = {
         setTimeout(() => ripple.remove(), 600);
     }
 };
-
-// Export for module usage
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = Animations;
-}
