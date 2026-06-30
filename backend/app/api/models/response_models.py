@@ -4,7 +4,7 @@ from datetime import datetime
 
 class ChatResponse(BaseModel):
     message: str
-    conversation_id: str
+    conversation_id: Optional[str] = None
     created_at: datetime = datetime.now()
 
 class AuthResponse(BaseModel):
