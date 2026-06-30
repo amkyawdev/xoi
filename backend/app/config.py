@@ -18,9 +18,9 @@ class Settings(BaseSettings):
 
     # AI Service (Groq - Primary)
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
-    AI_MODEL: str = os.getenv("AI_MODEL", "mixtral-8x7b-32768")
+    AI_MODEL: str = os.getenv("AI_MODEL", "qwen-3-8b")
     AI_TEMPERATURE: float = 0.7
-    AI_MAX_TOKENS: int = 4096
+    AI_MAX_TOKENS: int = 8192
 
     # AI Service (OpenAI - Backup)
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
