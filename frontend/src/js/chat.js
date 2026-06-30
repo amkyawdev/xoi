@@ -16,11 +16,6 @@ class ChatManager {
         this.loadHistory();
         this.setupEventListeners();
         this.updateSendButton();
-        this.showWelcome();
-    }
-
-    showWelcome() {
-        this.addMessage('bot', 'Hello! I\'m AmkyawDev AI Agent. How can I help you today?');
     }
 
     setupEventListeners() {
@@ -197,7 +192,6 @@ class ChatManager {
     startNewChat() {
         this.messages = [];
         this.chatMessages.innerHTML = '';
-        this.showWelcome();
     }
 
     saveMessage(role, content) {
