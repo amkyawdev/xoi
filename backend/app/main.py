@@ -1,4 +1,10 @@
 import logging
+import sys
+import os
+
+# Add backend/app to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes.auth import router as auth_router
