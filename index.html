@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AmkyawDev AI - Loading</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .loader-container {
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+        
+        /* Logo */
+        .loader-logo {
+            width: 140px;
+            height: 140px;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .loader-logo svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
+        }
+        
+        /* Text */
+        .loader-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .loader-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 50px;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+        }
+        
+        /* Spinner */
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .loading-spinner::before,
+        .loading-spinner::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+        }
+        
+        .loading-spinner::before {
+            width: 100%;
+            height: 100%;
+            border: 4px solid rgba(255,255,255,0.2);
+            top: 0;
+            left: 0;
+        }
+        
+        .loading-spinner::after {
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-top-color: white;
+            top: 0;
+            left: 0;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Status */
+        .status-text {
+            font-size: 1rem;
+            opacity: 0.85;
+            margin-bottom: 40px;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: white;
+            border-radius: 2px;
+            animation: progress 2s ease-in-out infinite;
+        }
+        
+        /* Dots Animation */
+        .dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 1s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 2s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 0.3s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 0.8s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 1.3s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: 1.8s; }
+        
+        /* Animations */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes progress {
+            0% { width: 0%; margin-left: 0; }
+            50% { width: 60%; margin-left: 20%; }
+            100% { width: 0%; margin-left: 100%; }
+        }
+        
+        @keyframes dots {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        /* Skip Button */
+        .skip-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .skip-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Background -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <div class="loader-container">
+        <!-- Logo SVG -->
+        <div class="loader-logo">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="white" fill-opacity="0.15" stroke="white" stroke-width="2"/>
+                <path d="M25 40L50 20L75 40V60L50 80L25 60V40Z" fill="white" fill-opacity="0.3" stroke="white" stroke-width="2"/>
+                <path d="M50 20V80" stroke="white" stroke-width="2"/>
+                <path d="M25 40L75 60M75 40L25 60" stroke="white" stroke-width="2"/>
+                <circle cx="50" cy="50" r="10" fill="white"/>
+            </svg>
+        </div>
+        
+        <!-- Title -->
+        <h1 class="loader-title">AmkyawDev AI</h1>
+        <p class="loader-subtitle">Intelligent Assistant</p>
+        
+        <!-- Loading Spinner -->
+        <div class="loading-spinner"></div>
+        
+        <!-- Status Text -->
+        <p class="status-text" id="statusText">
+            Initializing<span class="dots"></span>
+        </p>
+        
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+    
+    <!-- Skip Button -->
+    <button class="skip-btn" onclick="skipLoading()">
+        Skip <i class="fas fa-arrow-right"></i>
+    </button>
+
+    <script>
+        // Loading messages
+        const messages = [
+            'Initializing AI models...',
+            'Loading capabilities...',
+            'Preparing interface...',
+            'Almost ready...'
+        ];
+        
+        let messageIndex = 0;
+        const statusText = document.getElementById('statusText');
+        
+        // Update status message
+        setInterval(() => {
+            statusText.innerHTML = messages[messageIndex % messages.length] + '<span class="dots"></span>';
+            messageIndex++;
+        }, 1500);
+        
+        // Skip loading and redirect
+        function skipLoading() {
+            window.location.href = 'frontend/pages/index.html';
+        }
+        
+        // Auto redirect after 4 seconds
+        setTimeout(() => {
+            skipLoading();
+        }, 4000);
+    </script>
+</body>
+</html>
