@@ -1,4 +1,5 @@
 import uuid
+import logging
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 from passlib.context import CryptContext
@@ -8,6 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from app.config import settings
 
+logger = logging.getLogger(__name__)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Database setup
@@ -22,23 +24,29 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-# Create engine and session
+# Create engine and session (lazy initialization)
 engine = None
 SessionLocal = None
+_db_initialized = False
 
 def init_db():
-    global engine, SessionLocal
+    """Initialize database connection lazily"""
+    global engine, SessionLocal, _db_initialized
+    if _db_initialized:
+        return
+        
     if settings.DATABASE_URL:
         try:
             engine = create_engine(settings.DATABASE_URL, pool_pre_ping=True)
             SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-            # Create tables
             Base.metadata.create_all(bind=engine)
+            _db_initialized = True
+            logger.info("Database initialized successfully")
         except Exception as e:
-            print(f"Database connection error: {e}")
-
-# Initialize database on module load
-init_db()
+            logger.warning(f"Database connection failed: {e}. Running in demo mode.")
+            _db_initialized = False
+    else:
+        logger.info("DATABASE_URL not set. Running in demo mode.")
 
 class AuthService:
     def __init__(self):

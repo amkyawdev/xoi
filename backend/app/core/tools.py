@@ -180,33 +180,88 @@ class ToolOrchestrator:
 
     def _calculate(self, expression: str) -> Dict[str, Any]:
         try:
-            # Safe evaluation for basic math
-            allowed_chars = set("0123456789+-*/.() ")
-            if all(c in allowed_chars for c in expression):
-                result = eval(expression)
-                return {"expression": expression, "result": result}
-            else:
-                return {"error": "Invalid characters in expression"}
+            # Safe evaluation for basic math using ast instead of eval
+            import ast
+            import operator
+            
+            operators = {
+                ast.Add: operator.add,
+                ast.Sub: operator.sub,
+                ast.Mult: operator.mul,
+                ast.Div: operator.truediv,
+                ast.USub: operator.neg,
+            }
+            
+            def eval_expr(node):
+                if isinstance(node, ast.Constant):
+                    return node.value
+                elif isinstance(node, ast.BinOp):
+                    return operators[type(node.op)](eval_expr(node.left), eval_expr(node.right))
+                elif isinstance(node, ast.UnaryOp):
+                    return operators[type(node.op)](eval_expr(node.operand))
+                else:
+                    raise ValueError(f"Unsupported operation: {type(node).__name__}")
+            
+            tree = ast.parse(expression, mode='eval')
+            result = eval_expr(tree.body)
+            return {"expression": expression, "result": result}
         except Exception as e:
-            return {"error": str(e)}
+            return {"error": f"Calculation error: {str(e)}"}
 
     async def _execute_code(self, code: str, language: str) -> Dict[str, Any]:
         if language.lower() == "python":
             try:
                 import io
                 import sys
+                import ast
+                
+                # Validate code syntax first
+                try:
+                    ast.parse(code)
+                except SyntaxError as e:
+                    return {"language": language, "error": f"Syntax error: {str(e)}", "success": False}
+                
+                # Restricted globals for sandboxed execution
+                restricted_globals = {
+                    '__builtins__': {
+                        'print': print,
+                        'range': range,
+                        'len': len,
+                        'str': str,
+                        'int': int,
+                        'float': float,
+                        'bool': bool,
+                        'list': list,
+                        'dict': dict,
+                        'set': set,
+                        'tuple': tuple,
+                        'abs': abs,
+                        'min': min,
+                        'max': max,
+                        'sum': sum,
+                        'sorted': sorted,
+                        'enumerate': enumerate,
+                        'zip': zip,
+                        'map': map,
+                        'filter': filter,
+                        'round': round,
+                        'pow': pow,
+                    },
+                    '__name__': '__sandbox__'
+                }
                 
                 old_stdout = sys.stdout
                 sys.stdout = io.StringIO()
                 
-                exec(code)
+                exec(code, restricted_globals, {})
                 
                 output = sys.stdout.getvalue()
                 sys.stdout = old_stdout
                 
                 return {"language": language, "output": output, "success": True}
             except Exception as e:
-                sys.stdout = old_stdout
+                if 'stdout' in dir():
+                    sys.stdout = old_stdout
                 return {"language": language, "error": str(e), "success": False}
         else:
             return {"error": f"Language '{language}' not supported"}

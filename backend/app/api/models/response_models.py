@@ -5,7 +5,12 @@ from datetime import datetime
 class ChatResponse(BaseModel):
     message: str
     conversation_id: Optional[str] = ""
-    created_at: datetime = datetime.now()
+    created_at: Optional[datetime] = None
+    
+    def __init__(self, **data):
+        if 'created_at' not in data or data['created_at'] is None:
+            data['created_at'] = datetime.now()
+        super().__init__(**data)
 
 class AuthResponse(BaseModel):
     token: str

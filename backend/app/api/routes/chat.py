@@ -3,7 +3,9 @@ from app.api.models.request_models import ChatRequest
 from app.api.models.response_models import ChatResponse
 from app.services.chat_service import ChatService
 from app.core.agent import Agent
+import logging
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 async def get_chat_service():
@@ -23,9 +25,8 @@ async def chat(
             message=response.get("message", "No response"),
             conversation_id=response.get("conversation_id") or request.conversation_id or ""
         )
+    except HTTPException:
+        raise
     except Exception as e:
-        # Return error as message
-        return ChatResponse(
-            message=f"Error: {str(e)}",
-            conversation_id=request.conversation_id or ""
-        )
+        logger.error(f"Chat error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Chat processing failed: {str(e)}")
