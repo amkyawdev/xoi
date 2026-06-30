@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AmkyawDev AI Agent - Loading</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        
+        .loader-container {
+            text-align: center;
+            color: white;
+        }
+        
+        .loader-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .loader-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .loader-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        
+        .loading-spinner::before,
+        .loading-spinner::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+        }
+        
+        .loading-spinner::before {
+            width: 100%;
+            height: 100%;
+            border: 4px solid rgba(255,255,255,0.3);
+        }
+        
+        .loading-spinner::after {
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            animation: fade 1.5s ease-in-out infinite;
+        }
+        
+        .progress-bar-custom {
+            width: 200px;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            margin: 20px auto 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar-custom::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 100%;
+            background: white;
+            border-radius: 2px;
+            animation: progress 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
+        @keyframes fade {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes progress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(300%); }
+        }
+        
+        .dots {
+            display: inline-block;
+        }
+        
+        .dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+        
+        @keyframes dots {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+            100% { content: ''; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader-container">
+        <!-- Logo -->
+        <svg class="loader-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="45" fill="white" fill-opacity="0.1" stroke="white" stroke-width="2"/>
+            <path d="M30 40L50 25L70 40V60L50 75L30 60V40Z" fill="white" fill-opacity="0.3" stroke="white" stroke-width="2"/>
+            <path d="M50 25V75" stroke="white" stroke-width="2"/>
+            <path d="M30 40L70 60M70 40L30 60" stroke="white" stroke-width="2"/>
+            <circle cx="50" cy="50" r="8" fill="white"/>
+        </svg>
+        
+        <!-- Title -->
+        <h1 class="loader-title">AmkyawDev AI</h1>
+        <p class="loader-subtitle">Intelligent Assistant</p>
+        
+        <!-- Loading Spinner -->
+        <div class="loading-spinner"></div>
+        
+        <!-- Loading Text -->
+        <p class="loading-text">
+            Loading<span class="dots"></span>
+        </p>
+        
+        <!-- Progress Bar -->
+        <div class="progress-bar-custom"></div>
+    </div>
+
+    <!-- Redirect Script -->
+    <script>
+        // Loading animation sequence
+        const messages = [
+            'Initializing AI models...',
+            'Loading capabilities...',
+            'Preparing interface...',
+            'Almost ready...'
+        ];
+        
+        let index = 0;
+        const loadingText = document.querySelector('.loading-text');
+        
+        setInterval(() => {
+            loadingText.innerHTML = messages[index % messages.length] + '<span class="dots"></span>';
+            index++;
+        }, 1500);
+        
+        // Redirect after 3 seconds
+        setTimeout(() => {
+            window.location.href = 'pages/index.html';
+        }, 3000);
+    </script>
+</body>
+</html>

@@ -97,8 +97,8 @@ class ChatManager {
         messageDiv.className = `message ${role === 'user' ? 'user' : 'bot'}${isError ? ' error' : ''}`;
         
         const avatar = role === 'ai' || role === 'bot'
-            ? '<img src="/public/images/admin.png" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />'
-            : '<img src="/public/images/user.png" alt="User" width="36" height="36" class="rounded-circle flex-shrink-0" />';
+            ? '<img src="../public/images/admin.png" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />'
+            : '<img src="../public/images/user.png" alt="User" width="36" height="36" class="rounded-circle flex-shrink-0" />';
 
         messageDiv.innerHTML = `
             ${avatar}
