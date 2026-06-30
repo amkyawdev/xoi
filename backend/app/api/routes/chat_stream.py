@@ -74,6 +74,12 @@ async def list_available_models():
     return {
         "models": [
             {
+                "id": "qwen/qwen3.6-27b",
+                "name": "Qwen 3.6 27B",
+                "provider": "Groq",
+                "context_length": 32768
+            },
+            {
                 "id": "qwen-3-8b",
                 "name": "Qwen 3 8B",
                 "provider": "Groq",

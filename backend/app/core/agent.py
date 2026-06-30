@@ -91,6 +91,8 @@ class GroqClient:
         self.model = settings.AI_MODEL
         self.temperature = settings.AI_TEMPERATURE
         self.max_tokens = settings.AI_MAX_TOKENS
+        self.top_p = 0.95
+        self.reasoning_effort = "default"
         self.base_url = "https://api.groq.com/openai/v1"
     
     async def chat(
@@ -115,7 +117,9 @@ class GroqClient:
                 "model": self.model,
                 "messages": messages,
                 "temperature": self.temperature,
-                "max_tokens": self.max_tokens
+                "max_tokens": self.max_tokens,
+                "top_p": self.top_p,
+                "reasoning_effort": self.reasoning_effort
             }
             
             if tools:
