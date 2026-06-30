@@ -98,7 +98,7 @@ class ChatManager {
         messageDiv.className = `message ${role === 'user' ? 'user' : 'bot'}${isError ? ' error' : ''}`;
         
         const avatar = role === 'ai' || role === 'bot'
-            ? '<img src="../public/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />'
+            ? '<img src="/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />'
             : '<div class="rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center bg-light text-secondary fw-bold" style="width:36px;height:36px;font-size:14px;">U</div>';
 
         messageDiv.innerHTML = `
@@ -162,7 +162,7 @@ class ChatManager {
         typingDiv.className = 'message bot';
         typingDiv.id = 'typingIndicator';
         typingDiv.innerHTML = `
-            <img src="../public/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />
+            <img src="/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />
             <div class="message-content">
                 <div class="typing-indicator">
                     <div class="typing-dot"></div>

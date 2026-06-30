@@ -383,7 +383,12 @@ class Agent:
                 # Execute tools
                 for tool_call in response["tool_calls"]:
                     tool_name = tool_call.get("function", {}).get("name")
-                    tool_args = json.loads(tool_call.get("function", {}).get("arguments", "{}"))
+                    tool_args_raw = tool_call.get("function", {}).get("arguments", "{}")
+                    try:
+                        tool_args = json.loads(tool_args_raw) if isinstance(tool_args_raw, str) else tool_args_raw
+                    except json.JSONDecodeError:
+                        tool_args = {}
+                        logger.warning(f"Invalid tool arguments for {tool_name}: {tool_args_raw}")
                     
                     result = await self.tool_manager.execute_tool(tool_name, tool_args)
                     tools_used.append(tool_name)

@@ -1,4 +1,5 @@
 import os
+import secrets
 from functools import lru_cache
 from pydantic_settings import BaseSettings
 
@@ -12,7 +13,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/amkyaw")
 
     # Authentication
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
 
@@ -49,6 +50,18 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Validate SECRET_KEY in production
+        if not self.DEBUG and not self.SECRET_KEY:
+            raise ValueError("SECRET_KEY must be set in production (non-debug mode)")
+        # Auto-generate SECRET_KEY if not set in debug mode
+        if not self.SECRET_KEY:
+            import secrets
+            self.SECRET_KEY = secrets.token_urlsafe(32)
+            import logging
+            logging.getLogger(__name__).warning("SECRET_KEY auto-generated. Set SECRET_KEY in environment for production!")
 
 @lru_cache()
 def get_settings():

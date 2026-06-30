@@ -1,7 +1,10 @@
+import os
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
+
+DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
 async def http_exception_handler(request: Request, exc: HTTPException):
     return JSONResponse(
@@ -22,10 +25,17 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 async def general_exception_handler(request: Request, exc: Exception):
-    return JSONResponse(
-        status_code=500,
-        content={"error": "Internal server error", "detail": str(exc)}
-    )
+    # In production, don't expose internal error details
+    if DEBUG:
+        return JSONResponse(
+            status_code=500,
+            content={"error": "Internal server error", "detail": str(exc)}
+        )
+    else:
+        return JSONResponse(
+            status_code=500,
+            content={"error": "Internal server error"}
+        )
 
 def setup_error_handlers(app: FastAPI):
     app.add_exception_handler(HTTPException, http_exception_handler)

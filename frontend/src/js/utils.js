@@ -3,7 +3,8 @@
 // API Configuration - Point to backend URL
 // Frontend: xoi-ai.vercel.app
 // Backend: xoi-nine.vercel.app
-const BASE_API_URL = 'https://xoi-nine.vercel.app';
+// Use window.API_BASE_URL if set (for environment-specific URLs), otherwise fallback
+const BASE_API_URL = window.API_BASE_URL || 'https://xoi-nine.vercel.app';
 
 const Utils = {
     // Debounce function
