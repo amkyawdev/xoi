@@ -1,7 +1,7 @@
 // Utility functions for Amkyaw AI Agent
 
-// API Configuration - Use relative paths for same-origin deployment
-const BASE_API_URL = ''; // Empty for relative API calls
+// API Configuration - Point to backend URL
+const BASE_API_URL = 'https://xoi-nine.vercel.app';
 
 const Utils = {
     // Debounce function
