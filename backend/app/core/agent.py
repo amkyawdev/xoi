@@ -87,10 +87,10 @@ class GroqClient:
     """Groq API client for LLM inference"""
     
     def __init__(self):
-        self.api_key = os.getenv("GROQ_API_KEY", "")
-        self.model = getattr(settings, 'AI_MODEL', "mixtral-8x7b-32768")
-        self.temperature = getattr(settings, 'AI_TEMPERATURE', 0.7)
-        self.max_tokens = getattr(settings, 'AI_MAX_TOKENS', 4096)
+        self.api_key = settings.GROQ_API_KEY
+        self.model = settings.AI_MODEL
+        self.temperature = settings.AI_TEMPERATURE
+        self.max_tokens = settings.AI_MAX_TOKENS
         self.base_url = "https://api.groq.com/openai/v1"
     
     async def chat(
