@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
 
     # AI Service (Hugging Face - Primary)
-    HF_API_KEY: str = os.getenv("HF_API_KEY", "")
+    HF_API_KEY: str = os.getenv("HF_API_KEY", "") or os.getenv("HF_TOKEN", "")
     HF_INFERENCE_ENDPOINT: str = os.getenv("HF_INFERENCE_ENDPOINT", "https://api-inference.huggingface.co/models")
     AI_MODEL: str = os.getenv("AI_MODEL", "Qwen/Qwen2.5-7B-Instruct")
     AI_TEMPERATURE: float = 0.6
