@@ -67,7 +67,13 @@
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     border-radius: 20px;
     width: fit-content;
+    cursor: pointer;
+    position: relative;
     animation: thinkPulse 2s ease-in-out infinite;
+}
+
+.think-indicator:hover {
+    transform: scale(1.02);
 }
 
 .think-icon {
@@ -79,6 +85,94 @@
     font-size: 0.75rem;
     color: white;
     font-weight: 500;
+}
+
+.think-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 12px;
+    border-radius: 8px;
+    max-width: 400px;
+    max-height: 300px;
+    overflow: auto;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.think-indicator.expanded .think-dropdown {
+    display: block;
+}
+
+.think-dropdown pre {
+    margin: 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Thank Dropdown Badge */
+.thank-dropdown-wrapper {
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.thank-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    width: fit-content;
+    transition: all 0.2s ease;
+}
+
+.thank-badge:hover {
+    background: #e2e8f0;
+}
+
+.thank-label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+.dropdown-arrow {
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+    transition: transform 0.2s ease;
+}
+
+.thank-dropdown-wrapper.expanded .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.thank-dropdown-wrapper .thank-dropdown {
+    display: none;
+    margin-top: 8px;
+    padding: 12px;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 8px;
+    max-width: 100%;
+    overflow: auto;
+}
+
+.thank-dropdown-wrapper.expanded .thank-dropdown {
+    display: block;
+}
+
+.thank-dropdown pre {
+    margin: 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 @keyframes thinkPulse {

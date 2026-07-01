@@ -126,9 +126,26 @@ class ChatManager {
 
         // Build think indicator if present
         const thinkIndicator = thinkContent ? `
-            <div class="think-indicator">
+            <div class="think-indicator" onclick="this.classList.toggle('expanded')">
                 <div class="think-icon">⚡</div>
                 <span class="think-text">Thinking...</span>
+                <div class="think-dropdown">
+                    <pre>${this.escapeHtml(thinkContent)}</pre>
+                </div>
+            </div>
+        ` : '';
+
+        // Build thank dropdown if present
+        const thankDropdown = thankContent ? `
+            <div class="thank-dropdown-wrapper" onclick="this.classList.toggle('expanded')">
+                <div class="thank-badge">
+                    <span>💬</span>
+                    <span class="thank-label">Response</span>
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="thank-dropdown">
+                    <pre>${this.escapeHtml(thankContent)}</pre>
+                </div>
             </div>
         ` : '';
 
@@ -136,7 +153,7 @@ class ChatManager {
             ${avatar}
             <div class="dialog-container">
                 ${thinkIndicator}
-                ${thankContent ? `<div class="thank-content">${thankContent}</div>` : ''}
+                ${thankDropdown}
                 <div class="dialog-box">
                     ${this.formatContentNoThank(mainContent)}
                 </div>
@@ -148,6 +165,16 @@ class ChatManager {
         Animations.scrollToBottom(this.chatMessages);
         
         this.messages.push({ role, content });
+    }
+    
+    escapeHtml(text) {
+        if (!text) return '';
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
     
     decodeHtmlEntities(text) {
