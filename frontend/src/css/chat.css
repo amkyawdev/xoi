@@ -48,141 +48,53 @@
     max-width: 75%;
 }
 
-/* Thank Content - Plain text outside dialog box */
-.thank-content {
+/* Thank Text - Displayed outside dialog box */
+.thank-text {
     margin-bottom: 8px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
-    font-style: italic;
     padding: 4px 0;
 }
 
-/* Think Indicator - Processing animation */
-.think-indicator {
+/* Think Box - Collapsible dropdown */
+.think-box {
+    margin-bottom: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.think-summary {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 8px;
-    padding: 6px 12px;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    border-radius: 20px;
-    width: fit-content;
-    cursor: pointer;
-    position: relative;
-    animation: thinkPulse 2s ease-in-out infinite;
-}
-
-.think-indicator:hover {
-    transform: scale(1.02);
-}
-
-.think-icon {
-    font-size: 1rem;
-    animation: thinkBounce 1s ease-in-out infinite;
-}
-
-.think-text {
-    font-size: 0.75rem;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    font-weight: 500;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s ease;
 }
 
-.think-dropdown {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin-top: 8px;
+.think-summary:hover {
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+}
+
+.think-content {
+    padding: 12px;
     background: #1e1e1e;
     color: #d4d4d4;
-    padding: 12px;
-    border-radius: 8px;
-    max-width: 400px;
+    border-radius: 0 0 8px 8px;
     max-height: 300px;
     overflow: auto;
-    z-index: 100;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
-.think-indicator.expanded .think-dropdown {
-    display: block;
-}
-
-.think-dropdown pre {
+.think-content pre {
     margin: 0;
-    font-family: 'Fira Code', monospace;
+    font-family: 'Fira Code', 'Consolas', monospace;
     font-size: 0.75rem;
     white-space: pre-wrap;
     word-break: break-word;
-}
-
-/* Thank Dropdown Badge */
-.thank-dropdown-wrapper {
-    margin-bottom: 8px;
-    cursor: pointer;
-}
-
-.thank-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    background: var(--bg-tertiary);
-    border-radius: 12px;
-    width: fit-content;
-    transition: all 0.2s ease;
-}
-
-.thank-badge:hover {
-    background: #e2e8f0;
-}
-
-.thank-label {
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-}
-
-.dropdown-arrow {
-    font-size: 0.6rem;
-    color: var(--text-secondary);
-    transition: transform 0.2s ease;
-}
-
-.thank-dropdown-wrapper.expanded .dropdown-arrow {
-    transform: rotate(180deg);
-}
-
-.thank-dropdown-wrapper .thank-dropdown {
-    display: none;
-    margin-top: 8px;
-    padding: 12px;
-    background: #1e1e1e;
-    color: #d4d4d4;
-    border-radius: 8px;
-    max-width: 100%;
-    overflow: auto;
-}
-
-.thank-dropdown-wrapper.expanded .thank-dropdown {
-    display: block;
-}
-
-.thank-dropdown pre {
-    margin: 0;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.75rem;
-    white-space: pre-wrap;
-    word-break: break-word;
-}
-
-@keyframes thinkPulse {
-    0%, 100% { opacity: 0.8; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.02); }
-}
-
-@keyframes thinkBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-2px); }
 }
 
 /* Skill Animation Container */

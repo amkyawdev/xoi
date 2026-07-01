@@ -102,58 +102,47 @@ class ChatManager {
             ? '<div class="avatar">AI</div>'
             : '<div class="avatar">U</div>';
 
-        // Decode HTML entities first (e.g., &lt;thank&gt; -> <thank>)
+        // Decode HTML entities first
         const decodedContent = this.decodeHtmlEntities(content);
         
-        // Extract <think> content (thinking process - displayed as processing indicator)
+        // 1. Parse content - extract <think> and <thank>
         let thinkContent = '';
+        let thankContent = '';
         let mainContent = decodedContent;
         
+        // Extract <think> content
         const thinkMatch = decodedContent.match(/<think>([\s\S]*?)<\/think>/i);
         if (thinkMatch) {
             thinkContent = thinkMatch[1].trim();
-            mainContent = decodedContent.replace(/<\/?think>/gi, '');
+            mainContent = decodedContent.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
         }
         
         // Extract <thank> content
-        let thankContent = '';
-        
         const thankMatch = mainContent.match(/<thank>([\s\S]*?)<\/thank>/i);
         if (thankMatch) {
             thankContent = thankMatch[1].trim();
-            mainContent = mainContent.replace(/<\/?thank>/gi, '');
+            mainContent = mainContent.replace(/<\/?thank>/gi, '').trim();
         }
 
-        // Build think indicator if present
-        const thinkIndicator = thinkContent ? `
-            <div class="think-indicator" onclick="this.classList.toggle('expanded')">
-                <div class="think-icon">⚡</div>
-                <span class="think-text">Thinking...</span>
-                <div class="think-dropdown">
+        // 2. Build Thank Text (outside dialog box)
+        const thankText = thankContent ? `<div class="thank-text">${thankContent}</div>` : '';
+
+        // 3. Build Think Dropdown (collapsible)
+        const thinkBox = thinkContent ? `
+            <details class="think-box">
+                <summary class="think-summary">🧠 AI Thinking Process</summary>
+                <div class="think-content">
                     <pre>${this.escapeHtml(thinkContent)}</pre>
                 </div>
-            </div>
+            </details>
         ` : '';
 
-        // Build thank dropdown if present
-        const thankDropdown = thankContent ? `
-            <div class="thank-dropdown-wrapper" onclick="this.classList.toggle('expanded')">
-                <div class="thank-badge">
-                    <span>💬</span>
-                    <span class="thank-label">Response</span>
-                    <span class="dropdown-arrow">▼</span>
-                </div>
-                <div class="thank-dropdown">
-                    <pre>${this.escapeHtml(thankContent)}</pre>
-                </div>
-            </div>
-        ` : '';
-
+        // 4. Build message
         messageDiv.innerHTML = `
             ${avatar}
             <div class="dialog-container">
-                ${thinkIndicator}
-                ${thankDropdown}
+                ${thankText}
+                ${thinkBox}
                 <div class="dialog-box">
                     ${this.formatContentNoThank(mainContent)}
                 </div>
