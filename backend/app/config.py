@@ -25,8 +25,8 @@ class Settings(BaseSettings):
     AI_MAX_TOKENS: int = 4096
 
     # AI Service (Groq - Backup)
-    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
-    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "") or os.getenv("HF_TOKEN", "")
+    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
     # AI Service (OpenAI - Backup)
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")

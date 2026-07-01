@@ -31,29 +31,29 @@ class HuggingFaceClient:
         tools: Optional[List[Dict]] = None,
         tool_choice: Optional[str] = None
     ) -> Dict[str, Any]:
-        """Send chat completion request using Groq API (Hugging Face Space backend)"""
+        """Send chat completion request using Groq API"""
         from app.config import settings
         
-        logger.info(f"HF_API_KEY set: {bool(self.api_key)}")
-        logger.info(f"Using Groq API via HF Spaces")
+        # Use GROQ_API_KEY from settings (or HF_TOKEN as fallback)
+        api_key = settings.GROQ_API_KEY
+        groq_model = settings.GROQ_MODEL
         
-        if not self.api_key:
-            raise Exception("HF_API_KEY not configured")
+        logger.info(f"GROQ_API_KEY set: {bool(api_key)}")
+        logger.info(f"Using Groq API with model: {groq_model}")
+        
+        if not api_key:
+            raise Exception("GROQ_API_KEY not configured")
         
         try:
-            # Convert messages to conversation format
-            prompt = self._build_prompt(messages)
-            logger.info(f"Prompt length: {len(prompt)}")
-            
             headers = {
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {self.api_key}"
+                "Authorization": f"Bearer {api_key}"
             }
             
-            # Use Groq API directly since HF Space uses Groq
+            # Use Groq API directly
             api_url = "https://api.groq.com/openai/v1/chat/completions"
             payload = {
-                "model": "llama-3.1-8b-instant",
+                "model": groq_model,
                 "messages": messages,
                 "temperature": self.temperature,
                 "max_tokens": self.max_tokens
