@@ -62,10 +62,10 @@ class HuggingFaceClient:
             chat_messages = []
             for msg in messages:
                 role = msg.get("role", "user")
-                content = msg.get("content", "")
-                if role == "tool":
-                    role = "user"  # Convert tool role to user for Groq
-                chat_messages.append({"role": role, "content": content})
+                content = msg.get("content", "") or ""
+                # Only include valid roles for Groq
+                if role in ["system", "user", "assistant"] and content:
+                    chat_messages.append({"role": role, "content": str(content)})
             
             payload = {
                 "model": groq_model,
