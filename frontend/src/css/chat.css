@@ -95,59 +95,37 @@
     40% { transform: scale(1); opacity: 1; }
 }
 
-/* Skill animations */
-.typing-message {
-    padding: 16px;
-}
-
-.typing-message .message-content {
+/* Typing Indicator with Text */
+.typing-indicator {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    min-width: 200px;
+    gap: 4px;
+    padding: 8px 0;
 }
 
-/* Thinking Dialog with Down Arrow */
-.thinking-dialog {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 12px 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background: #2563eb;
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out;
 }
 
-.thinking-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 8px;
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+.typing-dot:nth-child(3) { animation-delay: 0; }
+
+@keyframes typingBounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
 }
 
-.thinking-label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #475569;
-}
-
-.thinking-arrow {
+.typing-text {
+    font-size: 0.9rem;
     color: #64748b;
-    animation: bounceDown 1s ease-in-out infinite;
-    flex-shrink: 0;
+    margin-top: 8px;
 }
 
-@keyframes bounceDown {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(3px); }
-}
-
-.thinking-body {
-    display: flex;
-    justify-content: center;
-    padding: 8px 0 4px;
-}
-
+/* Skill animations (for future use) */
 .skill-animation {
     display: flex;
     justify-content: center;

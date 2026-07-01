@@ -138,35 +138,30 @@ class ChatManager {
         this.isLoading = true;
         this.updateSendButton();
         
-        // Show typing indicator in chat with thinking dialog (animation loads async)
+        // Show typing indicator with simple message
         const typingDiv = document.createElement('div');
-        typingDiv.className = 'message bot typing-message';
+        typingDiv.className = 'message bot';
         typingDiv.id = 'typingIndicator';
+        
+        const avatar = '<img src="/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />';
+        
+        // Simple response message
+        const responseText = this.getThinkingText(skillName);
+        
         typingDiv.innerHTML = `
-            <img src="/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />
-            <div class="message-content thinking-dialog">
-                <div class="thinking-header">
-                    <span class="thinking-label">${this.getThinkingText(skillName)}</span>
-                    <svg class="thinking-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
+            ${avatar}
+            <div class="message-content">
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
                 </div>
-                <div class="thinking-body" id="thinkingAnimationContainer">
-                    <!-- Animation loads async -->
-                </div>
+                <p class="typing-text mb-0">${responseText}</p>
             </div>
         `;
         
         this.chatMessages.appendChild(typingDiv);
         Animations.scrollToBottom(this.chatMessages);
-        
-        // Load animation async
-        this.getSkillAnimationSVG(skillName).then(svgHtml => {
-            const container = document.getElementById('thinkingAnimationContainer');
-            if (container) {
-                container.innerHTML = svgHtml;
-            }
-        });
     }
     
     getThinkingText(skillName) {
@@ -191,7 +186,7 @@ class ChatManager {
         } else if (skillLower.includes('browser') || skillLower.includes('scrap')) {
             return 'Browsing websites...';
         } else {
-            return 'Thinking...';
+            return 'Hello! How can I assist you today?';
         }
     }
     
