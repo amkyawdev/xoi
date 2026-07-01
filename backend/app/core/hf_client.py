@@ -55,11 +55,21 @@ class HuggingFaceClient:
                 "Authorization": f"Bearer {api_key}"
             }
             
-            # Use Groq API directly
+            # Use Groq API directly - pass messages array for chat completions
             api_url = "https://api.groq.com/openai/v1/chat/completions"
+            
+            # Build messages array properly for chat API
+            chat_messages = []
+            for msg in messages:
+                role = msg.get("role", "user")
+                content = msg.get("content", "")
+                if role == "tool":
+                    role = "user"  # Convert tool role to user for Groq
+                chat_messages.append({"role": role, "content": content})
+            
             payload = {
                 "model": groq_model,
-                "messages": messages,
+                "messages": chat_messages,
                 "temperature": self.temperature,
                 "max_tokens": self.max_tokens
             }
