@@ -57,6 +57,23 @@
     padding: 4px 0;
 }
 
+/* Skill Animation Container */
+.skill-animation-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.skill-icon {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Skill active dialog box */
+.dialog-box.skill-active {
+    text-align: center;
+    padding: 20px 16px;
+}
+
 /* Dialog Box */
 .dialog-box {
     position: relative;
