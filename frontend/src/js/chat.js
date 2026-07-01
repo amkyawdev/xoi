@@ -105,35 +105,14 @@ class ChatManager {
         // Decode HTML entities first
         const decodedContent = this.decodeHtmlEntities(content);
         
-        // 1. Parse content - extract <think> only (remove <thank> tags completely)
-        let thinkContent = '';
-        let mainContent = decodedContent;
-        
-        // Extract <think> content
-        const thinkMatch = decodedContent.match(/<think>([\s\S]*?)<\/think>/i);
-        if (thinkMatch) {
-            thinkContent = thinkMatch[1].trim();
-            mainContent = decodedContent.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
-        }
-        
-        // Remove <thank> tags completely (don't display outside)
+        // Remove <think> and <thank> tags completely
+        let mainContent = decodedContent.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
         mainContent = mainContent.replace(/<\/?thank>/gi, '').trim();
 
-        // 2. Build Think Dropdown (collapsible)
-        const thinkBox = thinkContent ? `
-            <details class="think-box">
-                <summary class="think-summary">🧠 AI Thinking Process</summary>
-                <div class="think-content">
-                    <pre>${this.escapeHtml(thinkContent)}</pre>
-                </div>
-            </details>
-        ` : '';
-
-        // 3. Build message
+        // Build message
         messageDiv.innerHTML = `
             ${avatar}
             <div class="dialog-container">
-                ${thinkBox}
                 <div class="dialog-box">
                     ${this.formatContentNoThank(mainContent)}
                 </div>
@@ -142,7 +121,7 @@ class ChatManager {
         `;
 
         this.chatMessages.appendChild(messageDiv);
-        Animations.scrollToBottom(this.chatMessages);
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
         
         this.messages.push({ role, content });
     }

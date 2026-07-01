@@ -48,46 +48,7 @@
     max-width: 75%;
 }
 
-/* Think Box - Collapsible dropdown */
-.think-box {
-    margin-bottom: 8px;
-    border-radius: 8px;
-    overflow: hidden;
-}
 
-.think-summary {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    font-size: 0.8rem;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background 0.2s ease;
-}
-
-.think-summary:hover {
-    background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
-}
-
-.think-content {
-    padding: 12px;
-    background: #1e1e1e;
-    color: #d4d4d4;
-    border-radius: 0 0 8px 8px;
-    max-height: 300px;
-    overflow: auto;
-}
-
-.think-content pre {
-    margin: 0;
-    font-family: 'Fira Code', 'Consolas', monospace;
-    font-size: 0.75rem;
-    white-space: pre-wrap;
-    word-break: break-word;
-}
 
 /* Skill Animation Container */
 .skill-animation-container {
