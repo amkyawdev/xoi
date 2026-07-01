@@ -250,7 +250,7 @@ class ChatManager {
         `;
         
         this.chatMessages.appendChild(typingDiv);
-        Animations.scrollToBottom(this.chatMessages);
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
     }
     
     getSkillSVG(skillName) {
