@@ -105,19 +105,37 @@ class ChatManager {
         // Decode HTML entities first (e.g., &lt;thank&gt; -> <thank>)
         const decodedContent = this.decodeHtmlEntities(content);
         
-        // Extract <thank> content
-        let thankContent = '';
+        // Extract <think> content (thinking process - displayed as processing indicator)
+        let thinkContent = '';
         let mainContent = decodedContent;
         
-        const thankMatch = decodedContent.match(/<thank>([\s\S]*?)<\/thank>/i);
+        const thinkMatch = decodedContent.match(/<think>([\s\S]*?)<\/think>/i);
+        if (thinkMatch) {
+            thinkContent = thinkMatch[1].trim();
+            mainContent = decodedContent.replace(/<\/?think>/gi, '');
+        }
+        
+        // Extract <thank> content
+        let thankContent = '';
+        
+        const thankMatch = mainContent.match(/<thank>([\s\S]*?)<\/thank>/i);
         if (thankMatch) {
             thankContent = thankMatch[1].trim();
-            mainContent = decodedContent.replace(/<\/?thank>/gi, '');
+            mainContent = mainContent.replace(/<\/?thank>/gi, '');
         }
+
+        // Build think indicator if present
+        const thinkIndicator = thinkContent ? `
+            <div class="think-indicator">
+                <div class="think-icon">⚡</div>
+                <span class="think-text">Thinking...</span>
+            </div>
+        ` : '';
 
         messageDiv.innerHTML = `
             ${avatar}
             <div class="dialog-container">
+                ${thinkIndicator}
                 ${thankContent ? `<div class="thank-content">${thankContent}</div>` : ''}
                 <div class="dialog-box">
                     ${this.formatContentNoThank(mainContent)}

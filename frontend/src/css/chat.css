@@ -57,6 +57,40 @@
     padding: 4px 0;
 }
 
+/* Think Indicator - Processing animation */
+.think-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 20px;
+    width: fit-content;
+    animation: thinkPulse 2s ease-in-out infinite;
+}
+
+.think-icon {
+    font-size: 1rem;
+    animation: thinkBounce 1s ease-in-out infinite;
+}
+
+.think-text {
+    font-size: 0.75rem;
+    color: white;
+    font-weight: 500;
+}
+
+@keyframes thinkPulse {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes thinkBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+}
+
 /* Skill Animation Container */
 .skill-animation-container {
     display: flex;
