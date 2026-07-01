@@ -44,8 +44,8 @@ class HuggingFaceClient:
             logger.info(f"Prompt length: {len(prompt)}")
             
             headers = {
-                "Authorization": f"Bearer {self.api_key}",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.api_key}"
             }
             
             # Hugging Face Spaces API - use POST to /api/agents/chat/chat
