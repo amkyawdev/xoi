@@ -32,7 +32,7 @@ class HuggingFaceClient:
     ) -> Dict[str, Any]:
         """Send chat completion request to Hugging Face Inference API"""
         logger.info(f"HF_API_KEY set: {bool(self.api_key)}")
-        logger.info(f"HF Model: {self.model}")
+        logger.info(f"HF Endpoint: {self.base_url}")
         
         if not self.api_key:
             raise Exception("HF_API_KEY not configured")
@@ -47,6 +47,7 @@ class HuggingFaceClient:
                 "Content-Type": "application/json"
             }
             
+            # Use Spaces API format
             payload = {
                 "inputs": prompt,
                 "parameters": {
@@ -57,8 +58,9 @@ class HuggingFaceClient:
                 }
             }
             
-            api_url = f"{self.base_url}/{self.model}"
-            logger.info(f"Calling HF API: {api_url}")
+            # Hugging Face Spaces API
+            api_url = self.base_url.rstrip('/') + "/v1/chat/completions"
+            logger.info(f"Calling HF Spaces API: {api_url}")
             
             async with aiohttp.ClientSession() as session:
                 async with session.post(
@@ -68,14 +70,14 @@ class HuggingFaceClient:
                     timeout=aiohttp.ClientTimeout(total=120)
                 ) as response:
                     status = response.status
-                    logger.info(f"HF API response status: {status}")
+                    logger.info(f"HF Spaces API response status: {status}")
                     
                     if status == 200:
                         data = await response.json()
                         return self._parse_response(data)
                     else:
                         error = await response.text()
-                        logger.error(f"HF API error {status}: {error[:500]}")
+                        logger.error(f"HF Spaces API error {status}: {error[:500]}")
                         
                         if status == 503:
                             try:
@@ -90,7 +92,7 @@ class HuggingFaceClient:
                             except:
                                 pass
                         
-                        raise Exception(f"Hugging Face API error {status}: {error[:200]}")
+                        raise Exception(f"Hugging Face Spaces API error {status}: {error[:200]}")
                         
         except aiohttp.ClientError as e:
             logger.error(f"Hugging Face client error: {str(e)}")
