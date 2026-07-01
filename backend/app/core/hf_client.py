@@ -8,6 +8,7 @@ API: https://api-inference.huggingface.co/models
 
 import aiohttp
 import logging
+import urllib.parse
 from typing import Dict, List, Any, Optional
 from app.config import settings
 
@@ -47,26 +48,14 @@ class HuggingFaceClient:
                 "Content-Type": "application/json"
             }
             
-            # Use Spaces API format
-            payload = {
-                "inputs": prompt,
-                "parameters": {
-                    "temperature": self.temperature,
-                    "max_new_tokens": self.max_tokens,
-                    "return_full_text": False,
-                    "truncate": 4096
-                }
-            }
-            
-            # Hugging Face Spaces API - use base URL directly
-            api_url = self.base_url.rstrip('/')
+            # Hugging Face Spaces API - use GET with query parameter
+            api_url = self.base_url.rstrip('/') + "?input=" + urllib.parse.quote(prompt)
             logger.info(f"Calling HF Spaces API: {api_url}")
             
             async with aiohttp.ClientSession() as session:
-                async with session.post(
+                async with session.get(
                     api_url,
                     headers=headers,
-                    json=payload,
                     timeout=aiohttp.ClientTimeout(total=120)
                 ) as response:
                     status = response.status
@@ -74,7 +63,7 @@ class HuggingFaceClient:
                     
                     if status == 200:
                         data = await response.json()
-                        return self._parse_response(data)
+                        return self._parse_hf_space_response(data)
                     else:
                         error = await response.text()
                         logger.error(f"HF Spaces API error {status}: {error[:500]}")
@@ -141,6 +130,24 @@ class HuggingFaceClient:
             }
         except Exception as e:
             logger.error(f"Error parsing HF response: {str(e)}")
+            return {"message": "Error parsing response", "tool_calls": None}
+
+    def _parse_hf_space_response(self, data: Any) -> Dict[str, Any]:
+        """Parse Hugging Face Spaces API response"""
+        try:
+            # HF Spaces returns different format
+            if isinstance(data, dict):
+                # Try common response formats
+                message = data.get("response", "") or data.get("text", "") or data.get("message", "")
+                if message:
+                    return {
+                        "message": message.strip(),
+                        "tool_calls": None,
+                        "finish_reason": "stop"
+                    }
+            return {"message": "No response generated", "tool_calls": None}
+        except Exception as e:
+            logger.error(f"Error parsing HF Space response: {str(e)}")
             return {"message": "Error parsing response", "tool_calls": None}
     
     async def _fallback_response(self, messages: List[Dict]) -> Dict[str, Any]:
