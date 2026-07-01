@@ -4,6 +4,11 @@
     --primary-hover: #1d4ed8;
     --bg-light: #f8f9fa;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --bg-tertiary: #f1f5f9;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --accent-color: #667eea;
+    --border-color: #e2e8f0;
 }
 
 body {
@@ -40,78 +45,15 @@ body {
     background-color: var(--primary);
 }
 
-/* Message Styles */
-.message {
-    animation: fadeIn 0.3s ease;
-}
-
-.message.user .message-content {
-    background-color: var(--primary);
-    color: white;
-    border-radius: 1rem 1rem 0.25rem 1rem;
-}
-
-.message.bot .message-content {
-    background-color: white;
-    border-radius: 1rem 1rem 1rem 0.25rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
-
-.message pre {
-    background: #1e1e1e;
-    color: #d4d4d4;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    overflow-x: auto;
-    font-size: 0.875rem;
-}
-
-.message code {
-    font-family: 'Fira Code', Consolas, monospace;
-}
-
-.message.user code {
-    background: rgba(255, 255, 255, 0.2);
-}
-
 /* Chat Input */
-#user-input {
+#chatInput {
     border-radius: 1.5rem;
     padding: 0.75rem 1rem;
 }
 
-#user-input:focus {
+#chatInput:focus {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     border-color: var(--primary);
-}
-
-/* Typing Indicator */
-.typing-indicator {
-    display: flex;
-    gap: 4px;
-    padding: 8px 0;
-}
-
-.typing-dot {
-    width: 8px;
-    height: 8px;
-    background: #adb5bd;
-    border-radius: 50%;
-    animation: typingBounce 1.4s infinite ease-in-out;
-}
-
-.typing-dot:nth-child(1) { animation-delay: -0.32s; }
-.typing-dot:nth-child(2) { animation-delay: -0.16s; }
-.typing-dot:nth-child(3) { animation-delay: 0; }
-
-@keyframes typingBounce {
-    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-    40% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Card Hover Effect */
@@ -131,6 +73,11 @@ body {
 
 .animate-slide-in {
     animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideIn {

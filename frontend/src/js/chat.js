@@ -95,15 +95,35 @@ class ChatManager {
 
     addMessage(role, content, isError = false) {
         const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${role === 'user' ? 'user' : 'bot'}${isError ? ' error' : ''}`;
+        const isBot = role === 'ai' || role === 'bot';
+        messageDiv.className = `message ${isBot ? 'bot' : 'user'}${isError ? ' error' : ''}`;
         
-        const avatar = role === 'ai' || role === 'bot'
-            ? '<img src="/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />'
-            : '<div class="rounded-circle flex-shrink-0 d-flex align-items-center justify-content-center bg-light text-secondary fw-bold" style="width:36px;height:36px;font-size:14px;">U</div>';
+        const avatar = isBot
+            ? '<div class="avatar">AI</div>'
+            : '<div class="avatar">U</div>';
+
+        // Extract <thank> content
+        let thankContent = '';
+        let mainContent = content;
+        
+        const thankMatch = content.match(/<thank>([\s\S]*?)<\/thank>/i);
+        if (thankMatch) {
+            thankContent = thankMatch[1];
+            mainContent = content.replace(/<\/?thank>/gi, '');
+        }
+
+        // Escape thank content for display (plain text)
+        const escapedThankContent = this.escapeHtmlThank(thankContent);
 
         messageDiv.innerHTML = `
             ${avatar}
-            <div class="message-content">${this.formatContent(content)}</div>
+            <div class="dialog-container">
+                ${escapedThankContent ? `<div class="thank-content">${escapedThankContent}</div>` : ''}
+                <div class="dialog-box">
+                    ${this.formatContentNoThank(mainContent)}
+                </div>
+                <div class="dialog-arrow"></div>
+            </div>
         `;
 
         this.chatMessages.appendChild(messageDiv);
@@ -111,9 +131,20 @@ class ChatManager {
         
         this.messages.push({ role, content });
     }
-
-    formatContent(content) {
-        // Convert markdown-like syntax to HTML
+    
+    escapeHtmlThank(text) {
+        if (!text) return '';
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;')
+            .replace(/\n/g, '<br>');
+    }
+    
+    formatContentNoThank(content) {
+        // Convert markdown-like syntax to HTML (no thank handling)
         let html = Utils.escapeHtml(content);
         
         // Code blocks
@@ -134,29 +165,76 @@ class ChatManager {
         return html;
     }
 
+    formatContent(content) {
+        // Handle <thank> tags - extract content and display as plain text
+        let html = content;
+        let thankContent = '';
+        
+        // Extract content between <thank> tags
+        const thankMatch = content.match(/<thank>([\s\S]*?)<\/thank>/i);
+        if (thankMatch) {
+            thankContent = thankMatch[1];
+            html = content.replace(/<\/?thank>/gi, '');
+        }
+        
+        // Escape HTML in thank content (convert < > to &lt; &gt;)
+        thankContent = this.escapeHtmlThank(thankContent);
+        
+        // Escape HTML for main content
+        html = Utils.escapeHtml(html);
+        
+        // Code blocks
+        html = html.replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+        
+        // Inline code
+        html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+        
+        // Bold
+        html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        
+        // Italic
+        html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        
+        // Line breaks
+        html = html.replace(/\n/g, '<br>');
+        
+        // Combine: thank content (no dialog) + main content (with dialog)
+        return thankContent ? thankContent + html : html;
+    }
+    
+    escapeHtmlThank(text) {
+        if (!text) return '';
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;')
+            .replace(/\n/g, '<br>');
+    }
+
     showTyping(skillName = 'thinking') {
         this.isLoading = true;
         this.updateSendButton();
         
-        // Show typing indicator with simple message
         const typingDiv = document.createElement('div');
         typingDiv.className = 'message bot';
         typingDiv.id = 'typingIndicator';
         
-        const avatar = '<img src="/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />';
-        
-        // Simple response message
         const responseText = this.getThinkingText(skillName);
         
         typingDiv.innerHTML = `
-            ${avatar}
-            <div class="message-content">
-                <div class="typing-indicator">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
+            <div class="avatar">AI</div>
+            <div class="dialog-container">
+                <div class="dialog-box">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    <p class="typing-text mb-0">${responseText}</p>
                 </div>
-                <p class="typing-text mb-0">${responseText}</p>
+                <div class="dialog-arrow"></div>
             </div>
         `;
         

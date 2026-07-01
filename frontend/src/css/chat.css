@@ -3,6 +3,163 @@
     scroll-behavior: smooth;
 }
 
+/* Dialog Message System with Drop Arrow */
+.message {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    animation: messageSlideIn 0.3s ease-out;
+}
+
+@keyframes messageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* User Message - Right Side */
+.message.user {
+    flex-direction: row-reverse;
+}
+
+.message.user .dialog-container {
+    align-items: flex-end;
+}
+
+/* Bot/AI Message - Left Side */
+.message.bot {
+    flex-direction: row;
+}
+
+.message.bot .dialog-container {
+    align-items: flex-start;
+}
+
+/* Dialog Container */
+.dialog-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: 75%;
+}
+
+/* Thank Content - Plain text outside dialog box */
+.thank-content {
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    padding: 4px 0;
+}
+
+/* Dialog Box */
+.dialog-box {
+    position: relative;
+    padding: 12px 16px;
+    border-radius: 16px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+/* Bot Dialog Box */
+.message.bot .dialog-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* User Dialog Box */
+.message.user .dialog-box {
+    background: var(--bg-tertiary, #f1f5f9);
+    color: var(--text-primary, #1e293b);
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Drop Arrow - Bot (Left) */
+.message.bot .dialog-arrow {
+    position: absolute;
+    bottom: 8px;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 12px solid #764ba2;
+}
+
+.message.bot .dialog-arrow::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 2px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 10px solid #667eea;
+}
+
+/* Drop Arrow - User (Right) */
+.message.user .dialog-arrow {
+    position: absolute;
+    bottom: 8px;
+    right: -8px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 12px solid var(--bg-tertiary, #f1f5f9);
+}
+
+.message.user .dialog-arrow::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 2px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 10px solid var(--bg-tertiary, #f1f5f9);
+}
+
+/* Avatar styling */
+.message .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.message.bot .avatar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.message.user .avatar {
+    background: var(--bg-tertiary, #e2e8f0);
+    color: var(--text-secondary, #64748b);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Message Content */
+.message-content {
+    flex: 1;
+}
+
 .chat-messages::-webkit-scrollbar {
     width: 6px;
 }
@@ -81,31 +238,7 @@
 .typing-dot {
     width: 8px;
     height: 8px;
-    background: #2563eb;
-    border-radius: 50%;
-    animation: typingBounce 1.4s infinite ease-in-out;
-}
-
-.typing-dot:nth-child(1) { animation-delay: -0.32s; }
-.typing-dot:nth-child(2) { animation-delay: -0.16s; }
-.typing-dot:nth-child(3) { animation-delay: 0; }
-
-@keyframes typingBounce {
-    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-    40% { transform: scale(1); opacity: 1; }
-}
-
-/* Typing Indicator with Text */
-.typing-indicator {
-    display: flex;
-    gap: 4px;
-    padding: 8px 0;
-}
-
-.typing-dot {
-    width: 8px;
-    height: 8px;
-    background: #2563eb;
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     animation: typingBounce 1.4s infinite ease-in-out;
 }
@@ -121,7 +254,7 @@
 
 .typing-text {
     font-size: 0.9rem;
-    color: #64748b;
+    color: rgba(255, 255, 255, 0.8);
     margin-top: 8px;
 }
 
