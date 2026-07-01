@@ -5,100 +5,216 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Documentation - AmkyawDev AI</title>
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../src/css/style.css" />
-    <link rel="stylesheet" href="../src/css/docs.css" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../src/css/design-system.css" />
     <link rel="icon" type="image/x-icon" href="../public/favicon.ico" />
+    
+    <style>
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-top: var(--space-md);
+        }
+        .code-block pre {
+            margin: 0;
+            color: var(--text-primary);
+        }
+        .code-block code {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--accent-light);
+        }
+        .app-header {
+            padding: var(--space-md) var(--space-lg);
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .sidebar-overlay { display: none; }
+    </style>
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas">
-        <div class="offcanvas-header">
-            <div class="d-flex align-items-center gap-2">
-                <img src="../public/images/admin.svg" alt="Logo" width="40" height="40" class="rounded-circle">
-                <h5 class="offcanvas-title">AmkyawDev AI</h5>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="d-flex align-items-center gap-3">
+                <div class="avatar">
+                    <i data-lucide="bot" width="20" height="20"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-semibold">AmkyawDev</h6>
+                    <small class="text-muted">AI Agent</small>
+                </div>
             </div>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="offcanvas-body">
-            <nav class="nav flex-column nav-pills">
-                <a href="index.html" class="nav-link"><svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V14.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5H8a.5.5 0 0 0 .5-.5V2.207l-.146.147a.5.5 0 0 0 0 .708z"/></svg> Home</a>
-                <a href="docs.html" class="nav-link active"><svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/></svg> Docs</a>
-                <a href="skills.html" class="nav-link"><svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34z"/></svg> Skills</a>
-                <a href="about.html" class="nav-link"><svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg> About</a>
-            </nav>
+        
+        <div class="sidebar-nav mt-4">
+            <a href="index.html" class="sidebar-nav-item">
+                <i data-lucide="home" width="18" height="18"></i>
+                <span>Home</span>
+            </a>
+            <a href="docs.html" class="sidebar-nav-item active">
+                <i data-lucide="book-open" width="18" height="18"></i>
+                <span>Docs</span>
+            </a>
+            <a href="skills.html" class="sidebar-nav-item">
+                <i data-lucide="zap" width="18" height="18"></i>
+                <span>Skills</span>
+            </a>
+            <a href="about.html" class="sidebar-nav-item">
+                <i data-lucide="info" width="18" height="18"></i>
+                <span>About</span>
+            </a>
         </div>
-    </div>
+        
+        <div class="sidebar-footer mt-auto">
+            <div class="divider"></div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="avatar avatar-sm">
+                    <i data-lucide="user" width="14" height="14"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <small class="fw-medium">Guest</small>
+                </div>
+                <a href="login.html" class="btn btn-sm btn-primary">Sign In</a>
+            </div>
+        </div>
+    </aside>
 
     <!-- Main Content -->
-    <div class="d-flex flex-column min-vh-100">
-        <nav class="navbar navbar-light bg-white border-bottom">
+    <main class="main-content">
+        <header class="app-header">
             <div class="container-fluid">
-                <button class="btn btn-outline-secondary" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/></svg>
-                </button>
-                <span class="navbar-brand mb-0 h5">Documentation</span>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="avatar">
+                            <i data-lucide="book-open" width="20" height="20"></i>
+                        </div>
+                        <h5 class="mb-0 fw-semibold">Documentation</h5>
+                    </div>
+                    <a href="chat.html" class="btn btn-primary">
+                        <i data-lucide="message-circle" width="16" height="16"></i>
+                        Try Now
+                    </a>
+                </div>
             </div>
-        </nav>
+        </header>
 
-        <div class="container py-5 flex-grow-1">
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <h1 class="mb-4">Documentation</h1>
-                    
-                    <section class="mb-5">
-                        <h2><svg class="text-primary me-2" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294l4-13zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0zm8.792 0a.5.5 0 0 1 0 .708L12.207 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0z"/></svg>Getting Started</h2>
-                        <p class="text-muted">AmkyawDev AI Agent is an intelligent assistant powered by advanced AI models.</p>
-                        <div class="card bg-light border-0">
+        <div class="container-fluid py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <!-- Getting Started -->
+                    <section class="mb-5 animate-fade-in">
+                        <div class="card">
                             <div class="card-body">
-                                <code>npm install @amkyawdev/ai-agent</code>
+                                <div class="d-flex align-items-center gap-3 mb-4">
+                                    <div class="feature-icon" style="width: 48px; height: 48px;">
+                                        <i data-lucide="rocket" width="24" height="24"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="mb-1">Getting Started</h3>
+                                        <p class="text-muted mb-0">Quick introduction to AmkyawDev AI Agent</p>
+                                    </div>
+                                </div>
+                                
+                                <p class="text-secondary">
+                                    AmkyawDev AI Agent is an intelligent assistant powered by advanced AI models. 
+                                    It provides natural language understanding, code assistance, web search, and more.
+                                </p>
+                                
+                                <div class="code-block">
+                                    <code>pip install amkyawdev-agent</code>
+                                </div>
                             </div>
                         </div>
                     </section>
 
-                    <section class="mb-5">
-                        <h2><svg class="text-primary me-2" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M6.854 4.646a.5.5 0 0 1 0 .708L4.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0zm2.292 0a.5.5 0 0 0 0 .708L11.793 8l-2.647 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708 0z"/></svg>Quick Start</h2>
-                        <pre class="bg-dark text-light p-4 rounded"><code>const agent = new AIAgent({
-    apiKey: 'your-api-key',
-    model: 'mixtral-8x7b-32768'
-});
+                    <!-- Quick Start -->
+                    <section class="mb-5 animate-slide-up">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center gap-3 mb-4">
+                                    <div class="feature-icon" style="width: 48px; height: 48px;">
+                                        <i data-lucide="code" width="24" height="24"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="mb-1">Quick Start</h3>
+                                        <p class="text-muted mb-0">Get up and running in minutes</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="code-block">
+<pre><code>from amkyawdev import AIAgent
 
-const response = await agent.chat('Hello!');</code></pre>
+agent = AIAgent(api_key="your-api-key")
+response = await agent.chat("Hello!")
+print(response)</code></pre>
+                                </div>
+                            </div>
+                        </div>
                     </section>
 
-                    <section class="mb-5">
-                        <h2><svg class="text-primary me-2" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/></svg>API Reference</h2>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Method</th>
-                                        <th>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><code>chat(message)</code></td>
-                                        <td>Send a message and get AI response</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>search(query)</code></td>
-                                        <td>Search the web for information</td>
-                                    </tr>
-                                    <tr>
-                                        <td><code>analyze(file)</code></td>
-                                        <td>Analyze uploaded files</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <!-- API Reference -->
+                    <section class="mb-5 animate-slide-up" style="animation-delay: 100ms;">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center gap-3 mb-4">
+                                    <div class="feature-icon" style="width: 48px; height: 48px;">
+                                        <i data-lucide="file-text" width="24" height="24"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="mb-1">API Reference</h3>
+                                        <p class="text-muted mb-0">Complete API documentation</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Method</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><code class="text-primary">chat(message)</code></td>
+                                                <td>Send a message and get AI response</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code class="text-primary">search(query)</code></td>
+                                                <td>Search the web for information</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code class="text-primary">analyze(file)</code></td>
+                                                <td>Analyze uploaded files</td>
+                                            </tr>
+                                            <tr>
+                                                <td><code class="text-primary">stream(message)</code></td>
+                                                <td>Streaming chat responses</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </section>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

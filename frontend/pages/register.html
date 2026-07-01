@@ -5,140 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up - AmkyawDev AI</title>
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../src/css/style.css" />
-    <link rel="stylesheet" href="../src/css/auth.css" />
-    <link rel="stylesheet" href="../src/css/animations.css" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../src/css/design-system.css" />
     <link rel="icon" type="image/x-icon" href="../public/favicon.ico" />
     
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-primary);
             min-height: 100vh;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .register-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .logo-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
         }
-        
-        .form-control {
-            border-radius: 12px;
-            padding: 14px 16px;
-            border: 2px solid #e2e8f0;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-        
-        .input-group-text {
-            border-radius: 12px 0 0 12px;
-            border: 2px solid #e2e8f0;
-            border-right: none;
-            background: #f8fafc;
-        }
-        
-        .input-group .form-control {
-            border-radius: 0 12px 12px 0;
-            border-left: none;
-        }
-        
-        .btn-register {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 14px 24px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-        
-        .btn-register:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-register:disabled {
-            opacity: 0.7;
-            transform: none;
-        }
-        
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .auth-card {
             width: 100%;
-            height: 100%;
-            pointer-events: none;
+            max-width: 420px;
+            padding: var(--space-xl);
+        }
+        .form-control {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: var(--space-md);
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+        .input-icon {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-right: none;
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+            padding: var(--space-md);
+            color: var(--text-muted);
+        }
+        .input-with-icon {
+            display: flex;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
             overflow: hidden;
-            z-index: -1;
+            transition: all var(--transition-fast);
         }
-        
-        .shape {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: floatShape 20s infinite ease-in-out;
+        .input-with-icon:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
         }
-        
-        .shape:nth-child(1) {
-            width: 400px;
-            height: 400px;
-            top: -100px;
-            right: -100px;
+        .input-with-icon input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: var(--space-md);
+            color: var(--text-primary);
         }
-        
-        .shape:nth-child(2) {
-            width: 300px;
-            height: 300px;
-            top: 50%;
-            left: -100px;
-            animation-delay: -5s;
+        .input-with-icon input:focus {
+            outline: none;
         }
-        
-        .shape:nth-child(3) {
-            width: 200px;
-            height: 200px;
-            bottom: -50px;
-            right: 20%;
-            animation-delay: -10s;
-        }
-        
-        @keyframes floatShape {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(-30px, -30px) rotate(90deg); }
-            50% { transform: translate(0, -60px) rotate(180deg); }
-            75% { transform: translate(30px, -30px) rotate(270deg); }
-        }
-        
-        .welcome-title {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
         .password-strength {
             height: 4px;
             border-radius: 2px;
@@ -148,77 +79,75 @@
     </style>
 </head>
 <body>
-    <!-- Floating Shapes Background -->
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
-
-    <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-md-5 col-lg-4">
-                <div class="card register-card animate-fade-in-up p-5">
-                    <!-- Logo -->
-                    <div class="text-center mb-4">
-                        <div class="logo-icon animate-float mb-3">
-                            <img src="../public/images/admin.svg" alt="Logo" width="50" height="50">
-                        </div>
-                        <h3 class="fw-bold welcome-title mb-2">Create Account</h3>
-                        <p class="text-muted mb-0">Join AmkyawDev AI today</p>
-                    </div>
-                    
-                    <form id="registerForm">
-                        <div class="mb-3">
-                            <label class="form-label fw-medium">Full Name</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <svg width="18" height="18" fill="currentColor" class="text-primary" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/></svg>
-                                </span>
-                                <input type="text" class="form-control border-start-0" id="name" placeholder="Your name" required>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-medium">Email Address</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <svg width="18" height="18" fill="currentColor" class="text-primary" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/></svg>
-                                </span>
-                                <input type="email" class="form-control border-start-0" id="email" placeholder="you@example.com" required>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-medium">Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <svg width="18" height="18" fill="currentColor" class="text-primary" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
-                                </span>
-                                <input type="password" class="form-control border-start-0" id="password" placeholder="Min 8 characters" required minlength="8">
-                            </div>
-                            <div class="password-strength bg-light mt-2">
-                                <div id="passwordStrengthBar" class="h-100" style="width: 0%;"></div>
-                            </div>
-                            <small class="text-muted" id="passwordHint">Use 8+ characters with letters and numbers</small>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary btn-register w-100" id="registerBtn">
-                            <span id="registerText">Create Account</span>
-                            <svg class="ms-2" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/></svg>
-                        </button>
-                        <div id="registerError" class="alert alert-danger mt-3 d-none"></div>
-                    </form>
-                    
-                    <p class="text-center mt-4 mb-0">
-                        Already have an account? <a href="login.html" class="text-decoration-none fw-semibold text-primary">Sign in</a>
-                    </p>
+    <div class="auth-card card animate-fade-in">
+        <!-- Logo -->
+        <div class="text-center mb-4">
+            <div class="avatar mx-auto mb-3" style="background: var(--gradient-primary);">
+                <i data-lucide="bot" width="24" height="24"></i>
+            </div>
+            <h3 class="fw-bold mb-1">Create Account</h3>
+            <p class="text-muted mb-0">Join AmkyawDev AI today</p>
+        </div>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <i data-lucide="user" width="18" height="18"></i>
+                    </span>
+                    <input type="text" id="name" placeholder="Your name" required>
                 </div>
             </div>
+            
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <i data-lucide="mail" width="18" height="18"></i>
+                    </span>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <i data-lucide="lock" width="18" height="18"></i>
+                    </span>
+                    <input type="password" id="password" placeholder="Min 8 characters" required minlength="8">
+                </div>
+                <div class="password-strength bg-light mt-2">
+                    <div id="passwordStrengthBar" style="width: 0%; height: 100%; border-radius: 2px;"></div>
+                </div>
+                <small class="text-muted" id="passwordHint">Use 8+ characters with letters and numbers</small>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100" id="registerBtn">
+                <span id="registerText">Create Account</span>
+            </button>
+            
+            <div id="registerError" class="alert alert-danger mt-3 d-none"></div>
+        </form>
+        
+        <p class="text-center mt-4 mb-0">
+            Already have an account? <a href="login.html" class="fw-semibold">Sign in</a>
+        </p>
+        
+        <div class="text-center mt-4">
+            <a href="index.html" class="text-muted text-decoration-none">
+                <i data-lucide="arrow-left" width="14" height="14" class="me-1"></i>
+                Back to Home
+            </a>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
     <script src="../src/js/utils.js"></script>
     <script src="../src/js/auth.js"></script>
     <script>
@@ -234,31 +163,20 @@
             passwordInput.addEventListener('input', () => {
                 const password = passwordInput.value;
                 let strength = 0;
-                let color = '#e2e8f0';
-                let hint = 'Use 8+ characters with letters and numbers';
+                let color = '#374151';
                 
                 if (password.length >= 8) strength += 25;
                 if (/[a-z]/.test(password)) strength += 25;
                 if (/[A-Z]/.test(password)) strength += 25;
                 if (/[0-9]/.test(password) || /[^a-zA-Z0-9]/.test(password)) strength += 25;
                 
-                if (strength <= 25) {
-                    color = '#ef4444';
-                    hint = 'Weak password';
-                } else if (strength <= 50) {
-                    color = '#f59e0b';
-                    hint = 'Fair password';
-                } else if (strength <= 75) {
-                    color = '#3b82f6';
-                    hint = 'Good password';
-                } else {
-                    color = '#22c55e';
-                    hint = 'Strong password';
-                }
+                if (strength <= 25) color = '#ef4444';
+                else if (strength <= 50) color = '#f59e0b';
+                else if (strength <= 75) color = '#3b82f6';
+                else color = '#22c55e';
                 
                 strengthBar.style.width = strength + '%';
                 strengthBar.style.backgroundColor = color;
-                passwordHint.textContent = hint;
                 passwordHint.style.color = color;
             });
             

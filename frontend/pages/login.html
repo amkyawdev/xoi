@@ -5,267 +5,137 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign In - AmkyawDev AI</title>
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../src/css/style.css" />
-    <link rel="stylesheet" href="../src/css/auth.css" />
-    <link rel="stylesheet" href="../src/css/animations.css" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../src/css/design-system.css" />
     <link rel="icon" type="image/x-icon" href="../public/favicon.ico" />
     
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-primary);
             min-height: 100vh;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .logo-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
         }
-        
-        .form-control {
-            border-radius: 12px;
-            padding: 14px 16px;
-            border: 2px solid #e2e8f0;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-        
-        .input-group-text {
-            border-radius: 12px 0 0 12px;
-            border: 2px solid #e2e8f0;
-            border-right: none;
-            background: #f8fafc;
-        }
-        
-        .input-group .form-control {
-            border-radius: 0 12px 12px 0;
-            border-left: none;
-        }
-        
-        .btn-login {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 14px 24px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-        
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-login:disabled {
-            opacity: 0.7;
-            transform: none;
-        }
-        
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 24px 0;
-        }
-        
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e2e8f0;
-        }
-        
-        .divider span {
-            padding: 0 16px;
-            color: #64748b;
-            font-size: 0.875rem;
-        }
-        
-        .social-login {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-        
-        .btn-social {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            border: 2px solid #e2e8f0;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-social:hover {
-            border-color: #667eea;
-            background: #f8fafc;
-            transform: translateY(-2px);
-        }
-        
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .auth-card {
             width: 100%;
-            height: 100%;
-            pointer-events: none;
+            max-width: 420px;
+            padding: var(--space-xl);
+        }
+        .form-control {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: var(--space-md);
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+        .input-icon {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-right: none;
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+            padding: var(--space-md);
+            color: var(--text-muted);
+        }
+        .input-with-icon {
+            display: flex;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
             overflow: hidden;
-            z-index: -1;
+            transition: all var(--transition-fast);
         }
-        
-        .shape {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: floatShape 20s infinite ease-in-out;
+        .input-with-icon:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
         }
-        
-        .shape:nth-child(1) {
-            width: 400px;
-            height: 400px;
-            top: -100px;
-            left: -100px;
+        .input-with-icon input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: var(--space-md);
+            color: var(--text-primary);
         }
-        
-        .shape:nth-child(2) {
-            width: 300px;
-            height: 300px;
-            top: 50%;
-            right: -100px;
-            animation-delay: -5s;
-        }
-        
-        .shape:nth-child(3) {
-            width: 200px;
-            height: 200px;
-            bottom: -50px;
-            left: 30%;
-            animation-delay: -10s;
-        }
-        
-        @keyframes floatShape {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(30px, -30px) rotate(90deg); }
-            50% { transform: translate(0, -60px) rotate(180deg); }
-            75% { transform: translate(-30px, -30px) rotate(270deg); }
-        }
-        
-        .welcome-title {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .input-with-icon input:focus {
+            outline: none;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Shapes Background -->
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
-
-    <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-md-5 col-lg-4">
-                <div class="card login-card animate-fade-in-up p-5">
-                    <!-- Logo -->
-                    <div class="text-center mb-4">
-                        <div class="logo-icon animate-float mb-3">
-                            <img src="../public/images/admin.svg" alt="Logo" width="50" height="50">
-                        </div>
-                        <h3 class="fw-bold welcome-title mb-2">Welcome Back</h3>
-                        <p class="text-muted mb-0">Sign in to continue to AmkyawDev AI</p>
-                    </div>
-                    
-                    <form id="loginForm">
-                        <div class="mb-3">
-                            <label class="form-label fw-medium">Email Address</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <svg width="18" height="18" fill="currentColor" class="text-primary" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/></svg>
-                                </span>
-                                <input type="email" class="form-control border-start-0" id="email" placeholder="you@example.com" required>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-medium">Password</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <svg width="18" height="18" fill="currentColor" class="text-primary" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
-                                </span>
-                                <input type="password" class="form-control border-start-0" id="password" placeholder="••••••••" required>
-                            </div>
-                        </div>
-                        
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="remember">
-                                <label class="form-check-label text-muted" for="remember">Remember me</label>
-                            </div>
-                            <a href="reset.html" class="text-decoration-none text-primary fw-medium">Forgot password?</a>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary btn-login w-100" id="loginBtn">
-                            <span id="loginText">Sign In</span>
-                            <svg class="ms-2" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/></svg>
-                        </button>
-                        <div id="loginError" class="alert alert-danger mt-3 d-none"></div>
-                    </form>
-                    
-                    <div class="divider">
-                        <span>or continue with</span>
-                    </div>
-                    
-                    <div class="social-login">
-                        <button class="btn-social" title="Google">
-                            <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#EA4335" d="M5.26620003,9.76452941 C6.19878754,6.93863203 8.85444915,4.90909091 12,4.90909091 C13.6909091,4.90909091 15.2181818,5.50909091 16.4181818,6.49090909 L19.9090909,3 C17.7818182,1.14545455 15.0545455,0 12,0 C7.27006974,0 3.1977497,2.69829785 1.23999023,6.65002441 L5.26620003,9.76452941 Z"/><path fill="#34A853" d="M16.0407269,18.0125889 C14.9509167,18.7163016 13.5660892,19.0909091 12,19.0909091 C8.86648613,19.0909091 6.21911939,17.076871 5.27698177,14.2678769 L1.23746264,17.3349879 C3.19279051,21.2936293 7.26500293,24 12,24 C14.9328362,24 17.7353462,22.9573905 19.834192,20.9995801 L16.0407269,18.0125889 Z"/><path fill="#4A90E2" d="M19.834192,20.9995801 C22.0291676,18.9520994 23.4545455,15.903663 23.4545455,12 C23.4545455,11.2909091 23.3454545,10.5272727 23.1818182,9.81818182 L12,9.81818182 L12,14.4545455 L18.4363636,14.4545455 C18.1187732,16.013626 17.2662994,17.2212117 16.0407269,18.0125889 L19.834192,20.9995801 Z"/><path fill="#FBBC05" d="M5.27698177,14.2678769 C5.03832634,13.556323 4.90909091,12.7937589 4.90909091,12 C4.90909091,11.2182781 5.03443647,10.4668121 5.26620003,9.76452941 L1.23999023,6.65002441 C0.43658717,8.26043162 0,10.0753848 0,12 C0,13.9195484 0.444780743,15.7 1.23746264,17.3349879 L5.27698177,14.2678769 Z"/></svg>
-                        </button>
-                        <button class="btn-social" title="GitHub">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#333"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        </button>
-                        <button class="btn-social" title="Facebook">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                        </button>
-                    </div>
-                    
-                    <p class="text-center mt-4 mb-0">
-                        Don't have an account? <a href="register.html" class="text-decoration-none fw-semibold text-primary">Sign up</a>
-                    </p>
+    <div class="auth-card card animate-fade-in">
+        <!-- Logo -->
+        <div class="text-center mb-4">
+            <div class="avatar mx-auto mb-3" style="background: var(--gradient-primary);">
+                <i data-lucide="bot" width="24" height="24"></i>
+            </div>
+            <h3 class="fw-bold mb-1">Welcome Back</h3>
+            <p class="text-muted mb-0">Sign in to continue to AmkyawDev AI</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <i data-lucide="mail" width="18" height="18"></i>
+                    </span>
+                    <input type="email" id="email" placeholder="you@example.com" required>
                 </div>
             </div>
+            
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <i data-lucide="lock" width="18" height="18"></i>
+                    </span>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="remember">
+                    <label class="form-check-label text-muted" for="remember">Remember me</label>
+                </div>
+                <a href="reset.html" class="text-decoration-none">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100" id="loginBtn">
+                <span id="loginText">Sign In</span>
+            </button>
+            
+            <div id="loginError" class="alert alert-danger mt-3 d-none"></div>
+        </form>
+        
+        <p class="text-center mt-4 mb-0">
+            Don't have an account? <a href="register.html" class="fw-semibold">Sign up</a>
+        </p>
+        
+        <div class="text-center mt-4">
+            <a href="index.html" class="text-muted text-decoration-none">
+                <i data-lucide="arrow-left" width="14" height="14" class="me-1"></i>
+                Back to Home
+            </a>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
     <script src="../src/js/utils.js"></script>
     <script src="../src/js/auth.js"></script>
     <script>

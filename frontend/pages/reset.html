@@ -5,52 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reset Password - AmkyawDev AI</title>
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../src/css/style.css" />
-    <link rel="stylesheet" href="../src/css/auth.css" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../src/css/design-system.css" />
     <link rel="icon" type="image/x-icon" href="../public/favicon.ico" />
+    
+    <style>
+        body {
+            background: var(--bg-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            padding: var(--space-xl);
+        }
+        .form-control {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: var(--space-md);
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+        .input-icon {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-right: none;
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+            padding: var(--space-md);
+            color: var(--text-muted);
+        }
+        .input-with-icon {
+            display: flex;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all var(--transition-fast);
+        }
+        .input-with-icon:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+        .input-with-icon input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: var(--space-md);
+            color: var(--text-primary);
+        }
+        .input-with-icon input:focus {
+            outline: none;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-md-5 col-lg-4">
-                <div class="card shadow-lg border-0 rounded-4">
-                    <div class="card-body p-5">
-                        <div class="text-center mb-4">
-                            <img src="../public/images/admin.svg" alt="Logo" width="60" height="60" class="rounded-circle mb-3">
-                            <h3 class="fw-bold">Reset Password</h3>
-                            <p class="text-muted">Enter your email to reset</p>
-                        </div>
-                        
-                        <form id="resetForm">
-                            <div class="mb-4">
-                                <label class="form-label">Email</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0">
-                                        <svg width="16" height="16" fill="currentColor" class="text-muted" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/></svg>
-                                    </span>
-                                    <input type="email" class="form-control border-start-0" id="email" placeholder="you@example.com" required>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary w-100 py-2 rounded-3" id="resetBtn">
-                                <span id="resetText">Send Reset Link</span>
-                            </button>
-                            <div id="resetError" class="alert alert-danger mt-3 d-none"></div>
-                            <div id="resetSuccess" class="alert alert-success mt-3 d-none">Password reset link sent! Check your email.</div>
-                        </form>
-                        
-                        <p class="text-center mt-4 mb-0">
-                            Remember password? <a href="login.html" class="text-decoration-none fw-semibold">Sign in</a>
-                        </p>
-                    </div>
+<body>
+    <div class="auth-card card animate-fade-in">
+        <!-- Logo -->
+        <div class="text-center mb-4">
+            <div class="avatar mx-auto mb-3" style="background: var(--gradient-primary);">
+                <i data-lucide="key" width="24" height="24"></i>
+            </div>
+            <h3 class="fw-bold mb-1">Reset Password</h3>
+            <p class="text-muted mb-0">Enter your email to receive reset instructions</p>
+        </div>
+        
+        <form id="resetForm">
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <i data-lucide="mail" width="18" height="18"></i>
+                    </span>
+                    <input type="email" id="email" placeholder="you@example.com" required>
                 </div>
             </div>
+            
+            <button type="submit" class="btn btn-primary w-100" id="resetBtn">
+                <span id="resetText">Send Reset Link</span>
+            </button>
+            
+            <div id="resetSuccess" class="alert alert-success mt-3 d-none">
+                Password reset link sent! Check your email.
+            </div>
+            
+            <div id="resetError" class="alert alert-danger mt-3 d-none"></div>
+        </form>
+        
+        <p class="text-center mt-4 mb-0">
+            Remember your password? <a href="login.html" class="fw-semibold">Sign in</a>
+        </p>
+        
+        <div class="text-center mt-4">
+            <a href="index.html" class="text-muted text-decoration-none">
+                <i data-lucide="arrow-left" width="14" height="14" class="me-1"></i>
+                Back to Home
+            </a>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
     <script src="../src/js/utils.js"></script>
     <script src="../src/js/auth.js"></script>
     <script>
@@ -66,15 +137,17 @@
                     resetError.classList.add('d-none');
                     resetSuccess.classList.add('d-none');
                     resetBtn.disabled = true;
+                    document.getElementById('resetText').textContent = 'Sending...';
                     
                     const email = document.getElementById('email').value;
                     
                     try {
-                        const result = await window.auth.resetPassword(email);
+                        const result = await window.auth.reset(email);
                         if (result.success) {
                             resetSuccess.classList.remove('d-none');
+                            resetForm.reset();
                         } else {
-                            resetError.textContent = result.error || 'Email not found';
+                            resetError.textContent = result.error || 'Failed to send reset email.';
                             resetError.classList.remove('d-none');
                         }
                     } catch (error) {
@@ -83,6 +156,7 @@
                         resetError.classList.remove('d-none');
                     } finally {
                         resetBtn.disabled = false;
+                        document.getElementById('resetText').textContent = 'Send Reset Link';
                     }
                 });
             }
