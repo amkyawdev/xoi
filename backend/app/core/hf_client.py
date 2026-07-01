@@ -31,9 +31,11 @@ class HuggingFaceClient:
         tools: Optional[List[Dict]] = None,
         tool_choice: Optional[str] = None
     ) -> Dict[str, Any]:
-        """Send chat completion request to Hugging Face Inference API"""
+        """Send chat completion request using Groq API (Hugging Face Space backend)"""
+        from app.config import settings
+        
         logger.info(f"HF_API_KEY set: {bool(self.api_key)}")
-        logger.info(f"HF Endpoint: {self.base_url}")
+        logger.info(f"Using Groq API via HF Spaces")
         
         if not self.api_key:
             raise Exception("HF_API_KEY not configured")
@@ -48,10 +50,15 @@ class HuggingFaceClient:
                 "Authorization": f"Bearer {self.api_key}"
             }
             
-            # Hugging Face Spaces API - use POST to /api/agents/chat/chat
-            api_url = self.base_url.rstrip('/') + "/api/agents/chat/chat"
-            payload = {"message": prompt}
-            logger.info(f"Calling HF Spaces API: {api_url}")
+            # Use Groq API directly since HF Space uses Groq
+            api_url = "https://api.groq.com/openai/v1/chat/completions"
+            payload = {
+                "model": "llama-3.1-8b-instant",
+                "messages": messages,
+                "temperature": self.temperature,
+                "max_tokens": self.max_tokens
+            }
+            logger.info(f"Calling Groq API: {api_url}")
             
             async with aiohttp.ClientSession() as session:
                 async with session.post(
@@ -61,35 +68,21 @@ class HuggingFaceClient:
                     timeout=aiohttp.ClientTimeout(total=120)
                 ) as response:
                     status = response.status
-                    logger.info(f"HF Spaces API response status: {status}")
+                    logger.info(f"Groq API response status: {status}")
                     
                     if status == 200:
                         data = await response.json()
-                        return self._parse_hf_space_response(data)
+                        return self._parse_groq_response(data)
                     else:
                         error = await response.text()
-                        logger.error(f"HF Spaces API error {status}: {error[:500]}")
-                        
-                        if status == 503:
-                            try:
-                                error_data = await response.json()
-                                error_msg = error_data.get("error", "")
-                                if "loading" in error_msg.lower():
-                                    return {
-                                        "message": "Model is loading. Please try again.",
-                                        "tool_calls": None,
-                                        "loading": True
-                                    }
-                            except:
-                                pass
-                        
-                        raise Exception(f"Hugging Face Spaces API error {status}: {error[:500]}")
+                        logger.error(f"Groq API error {status}: {error[:500]}")
+                        raise Exception(f"Groq API error {status}: {error[:500]}")
                         
         except aiohttp.ClientError as e:
-            logger.error(f"Hugging Face client error: {str(e)}")
-            raise Exception(f"Hugging Face connection error: {str(e)}")
+            logger.error(f"Groq client error: {str(e)}")
+            raise Exception(f"Groq connection error: {str(e)}")
         except Exception as e:
-            logger.error(f"HF error: {str(e)}")
+            logger.error(f"Groq error: {str(e)}")
             raise
     
     def _build_prompt(self, messages: List[Dict]) -> str:
@@ -149,6 +142,24 @@ class HuggingFaceClient:
             return {"message": "No response generated", "tool_calls": None}
         except Exception as e:
             logger.error(f"Error parsing HF Space response: {str(e)}")
+            return {"message": "Error parsing response", "tool_calls": None}
+
+    def _parse_groq_response(self, data: Any) -> Dict[str, Any]:
+        """Parse Groq API response"""
+        try:
+            if isinstance(data, dict) and "choices" in data:
+                choices = data["choices"]
+                if choices and len(choices) > 0:
+                    message = choices[0].get("message", {})
+                    content = message.get("content", "")
+                    return {
+                        "message": content.strip() if content else "",
+                        "tool_calls": None,
+                        "finish_reason": choices[0].get("finish_reason", "stop")
+                    }
+            return {"message": "No response generated", "tool_calls": None}
+        except Exception as e:
+            logger.error(f"Error parsing Groq response: {str(e)}")
             return {"message": "Error parsing response", "tool_calls": None}
     
     async def _fallback_response(self, messages: List[Dict]) -> Dict[str, Any]:
