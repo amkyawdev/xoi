@@ -1,138 +1,184 @@
-# Amkyaw AI Agent
+# AmkyawDev AI Agent
 
-A minimalist AI agent application built with modern web technologies. The project features a clean, distraction-free interface with a FastAPI backend.
+<div align="center">
 
-## Features
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.11+-green.svg)
+![License](https://img.shields.io/badge/license-MIT-purple.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.109-red.svg)
 
-- **Clean Chat Interface** - Minimalist design focused on conversations
-- **User Authentication** - Login, registration, and password reset
-- **Real-time Responses** - Streaming AI responses
-- **Chat History** - Save and load conversation history
-- **Code Support** - Code highlighting and formatting
-- **Responsive Design** - Works on desktop and mobile
-- **MCP Integration** - Model Context Protocol support for extended capabilities
+### အဆင့်မြင့် AI Agent - Advanced AI Assistant
 
-## Tech Stack
+A powerful, minimalist AI agent application built with modern web technologies. Features a clean, distraction-free interface with a FastAPI backend.
+
+[Features](#features) • [Tech Stack](#tech-stack) • [Getting Started](#getting-started) • [Documentation](#documentation) • [License](#license)
+
+</div>
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---------|-------------|
+| 💬 **Smart Chat** | Clean, intuitive chat interface with real-time AI responses |
+| 🔐 **User Authentication** | Secure login, registration, and password reset |
+| 📜 **Chat History** | Save and load conversation history |
+| 💻 **Code Support** | Syntax highlighting and code formatting |
+| 🔍 **Web Search** | Built-in web search capabilities |
+| 🤖 **AI Agent** | Intelligent agent powered by Groq/HuggingFace |
+| 📱 **Responsive Design** | Works perfectly on desktop and mobile |
+| 🔧 **MCP Integration** | Model Context Protocol for extended capabilities |
+| 🌐 **Browser Automation** | Automated web browsing with Browserless |
+| 📤 **Telegram Bot** | Send messages directly to Telegram |
+
+---
+
+## 🛠 Tech Stack
 
 ### Frontend
-- Vanilla JavaScript (ES6+)
-- CSS3 with CSS Variables
-- No external frameworks (lightweight & fast)
+- **Vanilla JavaScript** (ES6+) - Lightweight & fast
+- **CSS3** with CSS Variables - Modern styling
+- **Bootstrap 5** - Responsive layout
+- **AOS Animations** - Smooth page transitions
 
 ### Backend
-- Python 3.11+
-- FastAPI
-- Pydantic
-- JWT Authentication
+- **Python 3.11+** - Modern Python
+- **FastAPI** - High-performance web framework
+- **Pydantic** - Data validation
+- **JWT Authentication** - Secure user sessions
+- **Groq API** - Fast AI inference
+- **HuggingFace** - Alternative AI backend
+- **PostgreSQL** - Database support
 
-## Project Structure
+---
 
-```
-amkyawdev-ai-agent/
-├── frontend/
-│   ├── public/           # Static assets
-│   ├── src/
-│   │   ├── css/          # Stylesheets
-│   │   ├── js/           # JavaScript modules
-│   │   └── pages/        # HTML pages
-│   └── vercel.json
-├── backend/
-│   ├── app/
-│   │   ├── api/          # API routes
-│   │   ├── core/         # Core agent logic
-│   │   ├── services/     # Business logic
-│   │   └── utils/        # Utilities
-│   └── requirements.txt
-├── docs/                 # Documentation
-└── README.md
-```
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
 - Python 3.11+
-- Node.js (optional, for development)
+- Node.js (optional, for local development)
 - PostgreSQL (optional, for production)
 
 ### Backend Setup
 
-1. Navigate to backend directory:
-   ```bash
-   cd backend
-   ```
+```bash
+# Navigate to backend
+cd backend
 
-2. Create virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Install dependencies
+pip install -r requirements.txt
 
-4. Create `.env` file:
-   ```bash
-   cp .env.example .env
-   ```
+# Configure environment
+cp .env.example .env
+# Edit .env with your API keys
 
-5. Run the server:
-   ```bash
-   uvicorn app.main:app --reload
-   ```
+# Run server
+uvicorn app.main:app --reload
+```
 
 ### Frontend Setup
 
-The frontend can be deployed directly to Vercel or served statically.
+```bash
+# Deploy to Vercel
+cd frontend
+vercel
 
-1. Deploy to Vercel:
-   ```bash
-   cd frontend
-   vercel
-   ```
+# Or serve locally
+python -m http.server 8000
+```
 
-2. Or serve locally with any static server:
-   ```bash
-   python -m http.server 8000
-   ```
+---
 
-## Configuration
+## 🔑 Environment Variables
 
-### Environment Variables
+| Variable | Description | Required |
+|----------|------------|----------|
+| `DATABASE_URL` | PostgreSQL connection string | No |
+| `SECRET_KEY` | JWT secret key | Yes |
+| `GROQ_API_KEY` | Groq API key for AI | Yes |
+| `HF_API_KEY` | HuggingFace API key | No |
+| `AI_MODEL` | AI model to use | No |
+| `BROWSERLESS_API_KEY` | Browserless API key | No |
+| `TELEGRAM_BOT_TOKEN` | Telegram bot token | No |
+| `RAPIDAPI_KEY` | RapidAPI key | No |
+| `YOUTUBE_API_KEY` | YouTube Data API key | No |
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `DATABASE_URL` | PostgreSQL connection string | - |
-| `SECRET_KEY` | JWT secret key | - |
-| `OPENAI_API_KEY` | OpenAI API key | - |
-| `AI_MODEL` | AI model to use | gpt-4o |
-| `BROWSERLESS_API_KEY` | Browserless API key | - |
-| `RAPIDAPI_KEY` | RapidAPI key | - |
+---
 
-## API Endpoints
+## 📚 Documentation
 
-### Authentication
+### API Endpoints
+
+#### Authentication
 - `POST /api/auth/login` - User login
-- `POST /api/auth/register` - User registration
+- `POST /api/auth/register` - User registration  
 - `POST /api/auth/reset` - Password reset
 
-### Chat
+#### Chat
 - `POST /api/chat` - Send message
+- `POST /api/chat/stream` - Streaming chat (SSE)
+- `GET /api/chat/models` - List available models
 
-### History
+#### History
 - `GET /api/history` - Get chat history
 - `POST /api/history` - Create new conversation
 - `DELETE /api/history/{id}` - Delete conversation
 
-### Settings
+#### Settings
 - `GET /api/settings` - Get user settings
 - `PUT /api/settings` - Update settings
 
-### Upload
+#### Upload
 - `POST /api/upload` - Upload file
 
-## License
+---
 
-MIT License - see LICENSE file for details.
+## 📁 Project Structure
+
+```
+xoi/
+├── frontend/
+│   ├── public/
+│   │   └── images/
+│   │       └── animations/     # SVG animations
+│   ├── src/
+│   │   ├── css/               # Stylesheets
+│   │   └── js/                # JavaScript modules
+│   └── pages/                 # HTML pages
+├── backend/
+│   └── app/
+│       ├── api/               # API routes & models
+│       ├── core/               # Agent, tools, clients
+│       ├── services/          # Business logic
+│       ├── database/           # DB models
+│       └── utils/             # Helpers
+├── docs/                      # Documentation
+└── README.md
+```
+
+---
+
+## 🔗 Related Repositories
+
+- [agent-skills](https://github.com/amkyawdev/agent-skills) - OpenHands compatible AI skills
+- [ai-brain-skills](https://github.com/amkyawdev/ai-brain-skills) - Advanced AI skills
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+**Made with ❤️ by [AmkyawDev](https://github.com/amkyawdev)**
+
+</div>
