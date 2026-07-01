@@ -48,14 +48,16 @@ class HuggingFaceClient:
                 "Content-Type": "application/json"
             }
             
-            # Hugging Face Spaces API - use GET with query parameter
-            api_url = self.base_url.rstrip('/') + "?input=" + urllib.parse.quote(prompt)
+            # Hugging Face Spaces API - use POST to /api/agents/chat/chat
+            api_url = self.base_url.rstrip('/') + "/api/agents/chat/chat"
+            payload = {"message": prompt}
             logger.info(f"Calling HF Spaces API: {api_url}")
             
             async with aiohttp.ClientSession() as session:
-                async with session.get(
+                async with session.post(
                     api_url,
                     headers=headers,
+                    json=payload,
                     timeout=aiohttp.ClientTimeout(total=120)
                 ) as response:
                     status = response.status
@@ -135,9 +137,8 @@ class HuggingFaceClient:
     def _parse_hf_space_response(self, data: Any) -> Dict[str, Any]:
         """Parse Hugging Face Spaces API response"""
         try:
-            # HF Spaces returns different format
+            # HF Spaces /api/agents/chat/chat returns {"response": "...", ...}
             if isinstance(data, dict):
-                # Try common response formats
                 message = data.get("response", "") or data.get("text", "") or data.get("message", "")
                 if message:
                     return {
