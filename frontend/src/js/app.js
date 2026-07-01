@@ -2,38 +2,26 @@
 
 class App {
     constructor() {
-        this.currentPage = 'chat';
         this.init();
     }
 
     init() {
-        this.setupNavigation();
-        this.setupTheme();
+        this.setupSidebar();
         this.setupKeyboardShortcuts();
         this.initAnimations();
     }
 
-    setupNavigation() {
-        // Handle navigation active states
-        const navItems = document.querySelectorAll('.nav-item');
+    setupSidebar() {
+        // Sidebar navigation active state
+        const navLinks = document.querySelectorAll('.sidebar-nav-item');
         const currentPath = window.location.pathname;
-
-        navItems.forEach(item => {
-            if (item.getAttribute('href') === currentPath) {
-                item.classList.add('active');
+        
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && currentPath.includes(href.replace('./', '').replace('.html', ''))) {
+                link.classList.add('active');
             }
-
-            item.addEventListener('click', (e) => {
-                navItems.forEach(nav => nav.classList.remove('active'));
-                e.target.classList.add('active');
-            });
         });
-    }
-
-    setupTheme() {
-        // Check for saved theme preference
-        const savedTheme = Utils.getStorage('theme', 'light');
-        document.documentElement.setAttribute('data-theme', savedTheme);
     }
 
     setupKeyboardShortcuts() {
@@ -55,58 +43,11 @@ class App {
     }
 
     initAnimations() {
-        // Initialize staggered animations on page load
-        const animatedElements = document.querySelectorAll('.stagger-item');
-        if (animatedElements.length > 0) {
-            Animations.initStaggeredAnimations(animatedElements[0].parentElement);
+        // Add fade-in animation to main content
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.classList.add('animate-fade-in');
         }
-    }
-
-    // Page-specific initialization
-    initPage(page) {
-        switch (page) {
-            case 'chat':
-                this.initChatPage();
-                break;
-            case 'docs':
-                this.initDocsPage();
-                break;
-            case 'skills':
-                this.initSkillsPage();
-                break;
-        }
-    }
-
-    initChatPage() {
-        // Additional chat page initialization
-        const chatInput = document.getElementById('chatInput');
-        if (chatInput) {
-            chatInput.focus();
-        }
-    }
-
-    initDocsPage() {
-        // Initialize docs navigation highlighting
-        const docsNav = document.querySelector('.docs-nav');
-        if (docsNav) {
-            const links = docsNav.querySelectorAll('a');
-            links.forEach(link => {
-                link.addEventListener('click', () => {
-                    links.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                });
-            });
-        }
-    }
-
-    initSkillsPage() {
-        // Initialize skill cards
-        const skillCards = document.querySelectorAll('.skill-card');
-        skillCards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                Animations.pulse(card, 1.02);
-            });
-        });
     }
 }
 
@@ -114,13 +55,8 @@ class App {
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new App();
     
-    // Determine current page
-    const path = window.location.pathname;
-    if (path.includes('docs')) {
-        window.app.initPage('docs');
-    } else if (path.includes('skills')) {
-        window.app.initPage('skills');
-    } else {
-        window.app.initPage('chat');
+    // Initialize Lucide icons
+    if (window.lucide) {
+        window.lucide.createIcons();
     }
 });
