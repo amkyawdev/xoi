@@ -102,23 +102,23 @@ class ChatManager {
             ? '<div class="avatar">AI</div>'
             : '<div class="avatar">U</div>';
 
+        // Decode HTML entities first (e.g., &lt;thank&gt; -> <thank>)
+        const decodedContent = this.decodeHtmlEntities(content);
+        
         // Extract <thank> content
         let thankContent = '';
-        let mainContent = content;
+        let mainContent = decodedContent;
         
-        const thankMatch = content.match(/<thank>([\s\S]*?)<\/thank>/i);
+        const thankMatch = decodedContent.match(/<thank>([\s\S]*?)<\/thank>/i);
         if (thankMatch) {
-            thankContent = thankMatch[1];
-            mainContent = content.replace(/<\/?thank>/gi, '');
+            thankContent = thankMatch[1].trim();
+            mainContent = decodedContent.replace(/<\/?thank>/gi, '');
         }
-
-        // Escape thank content for display (plain text)
-        const escapedThankContent = this.escapeHtmlThank(thankContent);
 
         messageDiv.innerHTML = `
             ${avatar}
             <div class="dialog-container">
-                ${escapedThankContent ? `<div class="thank-content">${escapedThankContent}</div>` : ''}
+                ${thankContent ? `<div class="thank-content">${thankContent}</div>` : ''}
                 <div class="dialog-box">
                     ${this.formatContentNoThank(mainContent)}
                 </div>
@@ -132,15 +132,16 @@ class ChatManager {
         this.messages.push({ role, content });
     }
     
-    escapeHtmlThank(text) {
+    decodeHtmlEntities(text) {
         if (!text) return '';
         return text
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;')
-            .replace(/\n/g, '<br>');
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#039;/g, "'")
+            .replace(/&#39;/g, "'")
+            .replace(/&nbsp;/g, ' ');
     }
     
     formatContentNoThank(content) {
@@ -166,19 +167,16 @@ class ChatManager {
     }
 
     formatContent(content) {
-        // Handle <thank> tags - extract content and display as plain text
-        let html = content;
+        // Handle <thank> tags - decode entities and extract content
+        let html = this.decodeHtmlEntities(content);
         let thankContent = '';
         
         // Extract content between <thank> tags
-        const thankMatch = content.match(/<thank>([\s\S]*?)<\/thank>/i);
+        const thankMatch = html.match(/<thank>([\s\S]*?)<\/thank>/i);
         if (thankMatch) {
-            thankContent = thankMatch[1];
-            html = content.replace(/<\/?thank>/gi, '');
+            thankContent = thankMatch[1].trim();
+            html = html.replace(/<\/?thank>/gi, '');
         }
-        
-        // Escape HTML in thank content (convert < > to &lt; &gt;)
-        thankContent = this.escapeHtmlThank(thankContent);
         
         // Escape HTML for main content
         html = Utils.escapeHtml(html);
@@ -200,17 +198,6 @@ class ChatManager {
         
         // Combine: thank content (no dialog) + main content (with dialog)
         return thankContent ? thankContent + html : html;
-    }
-    
-    escapeHtmlThank(text) {
-        if (!text) return '';
-        return text
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;')
-            .replace(/\n/g, '<br>');
     }
 
     showTyping(skillName = 'thinking') {
