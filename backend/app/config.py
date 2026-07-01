@@ -26,7 +26,7 @@ class Settings(BaseSettings):
 
     # AI Service (Groq - Backup)
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "") or os.getenv("HF_TOKEN", "")
-    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "qwen/qwen3-32b")
 
     # AI Service (OpenAI - Backup)
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
