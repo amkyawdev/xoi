@@ -1,9 +1,7 @@
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="8" y="8" width="32" height="32" rx="8" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.2"/>
-  <rect x="8" y="8" width="32" height="32" rx="8" stroke="#2563eb" stroke-width="2" fill="none">
-    <animate attributeName="stroke-dasharray" values="0 150;150 0" dur="1.5s" repeatCount="indefinite"/>
-  </rect>
-  <path d="M16 24L22 30L32 18" stroke="#2563eb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.6">
-    <animate attributeName="opacity" values="0.6;1;0.6" dur="1s" repeatCount="indefinite"/>
-  </path>
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="10" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.2"/>
+  <circle cx="12" cy="12" r="10" stroke="#2563eb" stroke-width="2" fill="none" stroke-dasharray="60 100" stroke-linecap="round">
+    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <path d="M9 12L11 14L15 10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

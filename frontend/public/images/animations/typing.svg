@@ -1,13 +1,12 @@
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="6" y="12" width="36" height="24" rx="4" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.3"/>
-  <rect x="6" y="12" width="36" height="24" rx="4" stroke="#2563eb" stroke-width="2" fill="none"/>
-  <circle cx="12" cy="24" r="3" fill="#2563eb">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="3" y="6" width="18" height="12" rx="2" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.3"/>
+  <circle cx="7" cy="12" r="2" fill="#2563eb">
     <animate attributeName="opacity" values="1;0.2;1" dur="0.6s" repeatCount="indefinite" calcMode="discrete"/>
   </circle>
-  <circle cx="22" cy="24" r="3" fill="#2563eb">
+  <circle cx="12" cy="12" r="2" fill="#2563eb">
     <animate attributeName="opacity" values="0.2;1;0.2" dur="0.6s" repeatCount="indefinite" calcMode="discrete"/>
   </circle>
-  <circle cx="32" cy="24" r="3" fill="#2563eb">
+  <circle cx="17" cy="12" r="2" fill="#2563eb">
     <animate attributeName="opacity" values="0.2;0.2;1" dur="0.6s" repeatCount="indefinite" calcMode="discrete"/>
   </circle>
 </svg>

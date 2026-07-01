@@ -138,131 +138,181 @@ class ChatManager {
         this.isLoading = true;
         this.updateSendButton();
         
-        // Get animation SVG based on skill/action
-        const animationSvg = this.getSkillAnimationSVG(skillName);
-        
-        // Show typing indicator in chat
+        // Show typing indicator in chat with thinking dialog (animation loads async)
         const typingDiv = document.createElement('div');
         typingDiv.className = 'message bot typing-message';
         typingDiv.id = 'typingIndicator';
         typingDiv.innerHTML = `
             <img src="/images/admin.svg" alt="AI" width="36" height="36" class="rounded-circle flex-shrink-0" />
-            <div class="message-content">
-                ${animationSvg}
-                <p class="skill-text mb-0 mt-1">Using ${skillName}...</p>
+            <div class="message-content thinking-dialog">
+                <div class="thinking-header">
+                    <span class="thinking-label">${this.getThinkingText(skillName)}</span>
+                    <svg class="thinking-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                <div class="thinking-body" id="thinkingAnimationContainer">
+                    <!-- Animation loads async -->
+                </div>
             </div>
         `;
         
         this.chatMessages.appendChild(typingDiv);
         Animations.scrollToBottom(this.chatMessages);
+        
+        // Load animation async
+        this.getSkillAnimationSVG(skillName).then(svgHtml => {
+            const container = document.getElementById('thinkingAnimationContainer');
+            if (container) {
+                container.innerHTML = svgHtml;
+            }
+        });
     }
     
-    getSkillAnimationSVG(skill) {
-        const skillLower = skill.toLowerCase();
+    getThinkingText(skillName) {
+        const skillLower = skillName.toLowerCase();
         
-        // Map skills to animations
         if (skillLower.includes('search') || skillLower.includes('web')) {
-            return `<div class="skill-animation">${this.getSearchSVG()}</div>`;
+            return 'Searching the web...';
         } else if (skillLower.includes('code') || skillLower.includes('programming')) {
-            return `<div class="skill-animation">${this.getCodeSVG()}</div>`;
+            return 'Writing code...';
         } else if (skillLower.includes('read') || skillLower.includes('file') || skillLower.includes('docs')) {
-            return `<div class="skill-animation">${this.getReadingSVG()}</div>`;
+            return 'Reading documents...';
         } else if (skillLower.includes('test')) {
-            return `<div class="skill-animation">${this.getTestingSVG()}</div>`;
+            return 'Running tests...';
         } else if (skillLower.includes('deploy') || skillLower.includes('build')) {
-            return `<div class="skill-animation">${this.getDeploySVG()}</div>`;
+            return 'Building...';
         } else if (skillLower.includes('security')) {
-            return `<div class="skill-animation">${this.getSecuritySVG()}</div>`;
+            return 'Analyzing security...';
         } else if (skillLower.includes('planning') || skillLower.includes('analyze')) {
-            return `<div class="skill-animation">${this.getPlanningSVG()}</div>`;
+            return 'Analyzing...';
+        } else if (skillLower.includes('telegram')) {
+            return 'Sending to Telegram...';
+        } else if (skillLower.includes('browser') || skillLower.includes('scrap')) {
+            return 'Browsing websites...';
         } else {
-            // Default thinking animation
-            return `<div class="skill-animation">${this.getThinkingSVG()}</div>`;
+            return 'Thinking...';
         }
     }
     
-    getThinkingSVG() {
-        return `<svg width="40" height="40" viewBox="0 0 48 48" fill="none" class="skill-svg">
-            <circle cx="24" cy="24" r="20" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.3"/>
-            <path d="M24 8C15.163 8 8 15.163 8 24" stroke="#2563eb" stroke-width="2" stroke-linecap="round">
-                <animateTransform attributeName="transform" type="rotate" from="0 24 24" to="360 24 24" dur="1s" repeatCount="indefinite"/>
+    async getSkillAnimationSVG(skill) {
+        const skillLower = skill.toLowerCase();
+        
+        // Animation paths for each skill type
+        const animationMap = {
+            'search': '/images/animations/search.svg',
+            'web': '/images/animations/search.svg',
+            'code': '/images/animations/typing.svg',
+            'programming': '/images/animations/typing.svg',
+            'read': '/images/animations/reading.svg',
+            'file': '/images/animations/reading.svg',
+            'docs': '/images/animations/reading.svg',
+            'test': '/images/animations/processing.svg',
+            'deploy': '/images/animations/processing.svg',
+            'build': '/images/animations/processing.svg',
+            'security': '/images/animations/security.svg',
+            'planning': '/images/animations/processing.svg',
+            'analyze': '/images/animations/processing.svg',
+            'telegram': '/images/animations/success.svg',
+            'browser': '/images/animations/search.svg',
+            'scrap': '/images/animations/search.svg'
+        };
+        
+        // Find matching animation
+        let animationPath = '/images/animations/thinking.svg';
+        for (const [key, path] of Object.entries(animationMap)) {
+            if (skillLower.includes(key)) {
+                animationPath = path;
+                break;
+            }
+        }
+        
+        // Return SVG as inline with small size
+        return this.loadSVGAnimation(animationPath);
+    }
+    
+    async loadSVGAnimation(path) {
+        try {
+            const response = await fetch(path);
+            if (response.ok) {
+                const svgText = await response.text();
+                // Wrap and make small
+                return `<div class="skill-animation">${svgText.replace(/<svg/, '<svg width="32" height="32"')}</div>`;
+            }
+        } catch (e) {
+            console.warn('Could not load SVG:', path);
+        }
+        // Fallback to inline SVG (small)
+        return `<div class="skill-animation">${this.getThinkingSVGSmall()}</div>`;
+    }
+    
+    getThinkingSVGSmall() {
+        return `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="skill-svg">
+            <circle cx="12" cy="12" r="10" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.3"/>
+            <path d="M12 6C8.686 6 6 8.686 6 12" stroke="#2563eb" stroke-width="2" stroke-linecap="round">
+                <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
             </path>
         </svg>`;
     }
     
-    getSearchSVG() {
-        return `<svg width="40" height="40" viewBox="0 0 48 48" fill="none" class="skill-svg">
-            <circle cx="20" cy="20" r="12" stroke="#2563eb" stroke-width="2" fill="none"/>
-            <circle cx="20" cy="20" r="12" stroke="#2563eb" stroke-width="2" fill="none" stroke-dasharray="20 56">
-                <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="1.5s" repeatCount="indefinite"/>
+    getSearchSVGSmall() {
+        return `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="skill-svg">
+            <circle cx="10" cy="10" r="6" stroke="#2563eb" stroke-width="2" fill="none"/>
+            <circle cx="10" cy="10" r="6" stroke="#2563eb" stroke-width="2" fill="none" stroke-dasharray="10 28">
+                <animateTransform attributeName="transform" type="rotate" from="0 10 10" to="360 10 10" dur="1.5s" repeatCount="indefinite"/>
             </circle>
-            <line x1="29" y1="29" x2="40" y2="40" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+            <line x1="14" y1="14" x2="20" y2="20" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
         </svg>`;
     }
     
-    getCodeSVG() {
-        return `<svg width="40" height="40" viewBox="0 0 48 48" fill="none" class="skill-svg">
-            <rect x="4" y="8" width="40" height="32" rx="4" stroke="#2563eb" stroke-width="2" fill="none"/>
-            <path d="M16 18L10 24L16 30" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M32 18L38 24L32 30" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <line x1="28" y1="16" x2="20" y2="32" stroke="#2563eb" stroke-width="2" stroke-linecap="round">
-                <animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
+    getCodeSVGSmall() {
+        return `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="skill-svg">
+            <path d="M16 18L22 12L16 6" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 6L2 12L8 18" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+    }
+    
+    getReadingSVGSmall() {
+        return `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="skill-svg">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="#2563eb" stroke-width="2" fill="none"/>
+            <line x1="8" y1="7" x2="16" y2="7" stroke="#2563eb" stroke-width="2" stroke-linecap="round">
+                <animate attributeName="x2" values="8;16;8" dur="1.5s" repeatCount="indefinite"/>
             </line>
         </svg>`;
     }
     
-    getReadingSVG() {
-        return `<svg width="40" height="40" viewBox="0 0 48 48" fill="none" class="skill-svg">
-            <rect x="8" y="8" width="32" height="32" rx="4" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.3"/>
-            <line x1="14" y1="18" x2="34" y2="18" stroke="#2563eb" stroke-width="2" stroke-linecap="round">
-                <animate attributeName="x2" values="14;34;14" dur="1.5s" repeatCount="indefinite"/>
-            </line>
-            <line x1="14" y1="24" x2="28" y2="24" stroke="#2563eb" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-            <line x1="14" y1="30" x2="32" y2="30" stroke="#2563eb" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+    getTestingSVGSmall() {
+        return `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="skill-svg">
+            <path d="M9 12L11 14L15 10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/>
+            </path>
+            <circle cx="12" cy="12" r="8" stroke="#2563eb" stroke-width="2" fill="none"/>
         </svg>`;
     }
     
-    getTestingSVG() {
-        return `<svg width="40" height="40" viewBox="0 0 48 48" fill="none" class="skill-svg">
-            <path d="M8 12L24 6L40 12V36L24 42L8 36V12Z" stroke="#2563eb" stroke-width="2" fill="none"/>
-            <path d="M8 12L24 18L40 12" stroke="#2563eb" stroke-width="2" fill="none"/>
-            <path d="M24 18V42" stroke="#2563eb" stroke-width="2">
-                <animate attributeName="stroke-dasharray" values="0 30;30 0" dur="1s" repeatCount="indefinite"/>
-            </path>
+    getDeploySVGSmall() {
+        return `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="skill-svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 17L12 22L22 17" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12L12 17L22 12" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>`;
     }
     
-    getDeploySVG() {
-        return `<svg width="40" height="40" viewBox="0 0 48 48" fill="none" class="skill-svg">
-            <path d="M24 4L8 20V44H40V20L24 4Z" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.3"/>
-            <path d="M24 44V24" stroke="#2563eb" stroke-width="2">
-                <animate attributeName="d" values="M24 44V24;M24 20V44;M24 44V24" dur="1.5s" repeatCount="indefinite"/>
-            </path>
-            <path d="M16 36L24 28L32 36" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <animate attributeName="opacity" values="0.3;1;0.3" dur="1s" repeatCount="indefinite"/>
-            </path>
-        </svg>`;
-    }
-    
-    getSecuritySVG() {
-        return `<svg width="40" height="40" viewBox="0 0 48 48" fill="none" class="skill-svg">
-            <path d="M24 4L8 12V24C8 33 15 42 24 44C33 42 40 33 40 24V12L24 4Z" stroke="#2563eb" stroke-width="2" fill="none"/>
-            <path d="M16 24L22 30L32 18" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    getSecuritySVGSmall() {
+        return `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="skill-svg">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#2563eb" stroke-width="2" fill="none"/>
+            <path d="M9 12L11 14L15 10" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
             </path>
         </svg>`;
     }
     
-    getPlanningSVG() {
-        return `<svg width="40" height="40" viewBox="0 0 48 48" fill="none" class="skill-svg">
-            <rect x="6" y="8" width="36" height="36" rx="4" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.3"/>
-            <line x1="6" y1="18" x2="42" y2="18" stroke="#2563eb" stroke-width="2"/>
-            <rect x="12" y="24" width="8" height="8" fill="#2563eb" opacity="0.6">
-                <animate attributeName="opacity" values="0.6;1;0.6" dur="1s" repeatCount="indefinite"/>
-            </rect>
-            <rect x="24" y="24" width="8" height="8" fill="#2563eb" opacity="0.4">
-                <animate attributeName="opacity" values="0.4;0.8;0.4" dur="1.2s" repeatCount="indefinite"/>
-            </rect>
+    getPlanningSVGSmall() {
+        return `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="skill-svg">
+            <rect x="3" y="3" width="18" height="18" rx="2" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.3"/>
+            <line x1="3" y1="9" x2="21" y2="9" stroke="#2563eb" stroke-width="2"/>
+            <line x1="9" y1="21" x2="9" y2="9" stroke="#2563eb" stroke-width="2"/>
         </svg>`;
     }
 

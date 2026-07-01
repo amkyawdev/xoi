@@ -1,9 +1,6 @@
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="24" cy="24" r="18" stroke="#22c55e" stroke-width="2" fill="none" opacity="0.2"/>
-  <circle cx="24" cy="24" r="18" stroke="#22c55e" stroke-width="2" fill="none" stroke-dasharray="113">
-    <animate attributeName="stroke-dashoffset" from="113" to="0" dur="0.5s" fill="freeze"/>
-  </circle>
-  <path d="M15 24L21 30L33 18" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-    <animate attributeName="stroke-dasharray" from="0 50" to="25 0" dur="0.3s" begin="0.3s" fill="freeze"/>
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="10" stroke="#22c55e" stroke-width="2" fill="none" opacity="0.2"/>
+  <path d="M8 12L11 15L16 9" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="opacity" values="0;1;1" dur="0.3s" fill="freeze" calcMode="discrete"/>
   </path>
 </svg>
