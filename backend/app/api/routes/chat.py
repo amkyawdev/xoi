@@ -4,7 +4,7 @@ from app.api.models.request_models import ChatRequest
 from app.api.models.response_models import ChatResponse
 from app.services.chat_service import ChatService
 from app.core.agent import Agent
-from app.main import limiter
+from app.core.limiter import limiter
 import logging
 
 logger = logging.getLogger(__name__)

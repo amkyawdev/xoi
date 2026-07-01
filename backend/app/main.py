@@ -7,8 +7,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from app.api.routes.auth import router as auth_router
 from app.api.routes.chat import router as chat_router
@@ -19,9 +18,7 @@ from app.api.routes.chat_stream import router as chat_stream_router
 from app.utils.error_handlers import setup_error_handlers
 from app.config import settings
 from app.services.auth_service import init_db
-
-# Rate limiter setup
-limiter = Limiter(key_func=get_remote_address)
+from app.core.limiter import limiter
 
 # Configure logging
 logging.basicConfig(
