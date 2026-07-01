@@ -51,14 +51,6 @@ class App {
                 const newChatBtn = document.getElementById('newChatBtn');
                 if (newChatBtn) newChatBtn.click();
             }
-
-            // Escape to close modals/overlays
-            if (e.key === 'Escape') {
-                const overlay = document.getElementById('loadingOverlay');
-                if (overlay && overlay.classList.contains('active')) {
-                    Animations.hideLoading();
-                }
-            }
         });
     }
 

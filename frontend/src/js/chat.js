@@ -138,26 +138,7 @@ class ChatManager {
         this.isLoading = true;
         this.updateSendButton();
         
-        // Show loading overlay
-        const overlay = document.getElementById('loadingOverlay');
-        const animationEl = document.getElementById('loadingAnimation');
-        const textEl = document.getElementById('loadingText');
-        
-        if (overlay && animationEl) {
-            // Set thinking animation
-            animationEl.innerHTML = `
-                <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
-                    <circle cx="24" cy="24" r="20" stroke="#2563eb" stroke-width="2" fill="none" opacity="0.3"/>
-                    <path d="M24 8C15.163 8 8 15.163 8 24" stroke="#2563eb" stroke-width="2" stroke-linecap="round">
-                        <animateTransform attributeName="transform" type="rotate" from="0 24 24" to="360 24 24" dur="1s" repeatCount="indefinite"/>
-                    </path>
-                </svg>
-            `;
-            if (textEl) textEl.textContent = 'Thinking...';
-            overlay.classList.add('show');
-        }
-        
-        // Also show typing in chat
+        // Show typing indicator in chat
         const typingDiv = document.createElement('div');
         typingDiv.className = 'message bot';
         typingDiv.id = 'typingIndicator';
@@ -179,10 +160,6 @@ class ChatManager {
     hideTyping() {
         this.isLoading = false;
         this.updateSendButton();
-        
-        // Hide loading overlay
-        const overlay = document.getElementById('loadingOverlay');
-        if (overlay) overlay.classList.remove('show');
         
         // Remove typing indicator from chat
         const typing = document.getElementById('typingIndicator');

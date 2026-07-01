@@ -81,7 +81,7 @@
 .typing-dot {
     width: 8px;
     height: 8px;
-    background: var(--text-tertiary);
+    background: #2563eb;
     border-radius: 50%;
     animation: typingBounce 1.4s infinite ease-in-out;
 }
