@@ -58,8 +58,8 @@ class HuggingFaceClient:
                 }
             }
             
-            # Hugging Face Spaces API
-            api_url = self.base_url.rstrip('/') + "/v1/chat/completions"
+            # Hugging Face Spaces API - use base URL directly
+            api_url = self.base_url.rstrip('/')
             logger.info(f"Calling HF Spaces API: {api_url}")
             
             async with aiohttp.ClientSession() as session:
@@ -92,7 +92,7 @@ class HuggingFaceClient:
                             except:
                                 pass
                         
-                        raise Exception(f"Hugging Face Spaces API error {status}: {error[:200]}")
+                        raise Exception(f"Hugging Face Spaces API error {status}: {error[:500]}")
                         
         except aiohttp.ClientError as e:
             logger.error(f"Hugging Face client error: {str(e)}")
