@@ -33,13 +33,17 @@ class HuggingFaceClient:
     ) -> Dict[str, Any]:
         """Send chat completion request using Groq API"""
         from app.config import settings
+        import os
         
         # Use GROQ_API_KEY from settings (or HF_TOKEN as fallback)
+        env_groq_key = os.getenv("GROQ_API_KEY", "")
+        env_hf_token = os.getenv("HF_TOKEN", "")
         api_key = settings.GROQ_API_KEY
-        groq_model = settings.GROQ_MODEL
         
-        logger.info(f"GROQ_API_KEY set: {bool(api_key)}")
-        logger.info(f"Using Groq API with model: {groq_model}")
+        logger.info(f"ENV GROQ_API_KEY length: {len(env_groq_key)}")
+        logger.info(f"ENV HF_TOKEN length: {len(env_hf_token)}")
+        logger.info(f"settings.GROQ_API_KEY length: {len(api_key)}")
+        logger.info(f"Using Groq API with model: {settings.GROQ_MODEL}")
         
         if not api_key:
             raise Exception("GROQ_API_KEY not configured")
