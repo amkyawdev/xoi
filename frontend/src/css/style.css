@@ -178,13 +178,14 @@ body {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(4px);
     z-index: 9999;
-    display: flex;
+    display: none !important;
     align-items: center;
     justify-content: center;
 }
 
-.loading-overlay.show {
-    display: flex;
+.loading-overlay.show,
+.loading-overlay.active {
+    display: flex !important;
 }
 
 .loading-content {
