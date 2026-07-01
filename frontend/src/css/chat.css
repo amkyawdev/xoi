@@ -48,14 +48,6 @@
     max-width: 75%;
 }
 
-/* Thank Text - Displayed outside dialog box */
-.thank-text {
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    padding: 4px 0;
-}
-
 /* Think Box - Collapsible dropdown */
 .think-box {
     margin-bottom: 8px;

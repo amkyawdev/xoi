@@ -105,9 +105,8 @@ class ChatManager {
         // Decode HTML entities first
         const decodedContent = this.decodeHtmlEntities(content);
         
-        // 1. Parse content - extract <think> and <thank>
+        // 1. Parse content - extract <think> only (remove <thank> tags completely)
         let thinkContent = '';
-        let thankContent = '';
         let mainContent = decodedContent;
         
         // Extract <think> content
@@ -117,17 +116,10 @@ class ChatManager {
             mainContent = decodedContent.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
         }
         
-        // Extract <thank> content
-        const thankMatch = mainContent.match(/<thank>([\s\S]*?)<\/thank>/i);
-        if (thankMatch) {
-            thankContent = thankMatch[1].trim();
-            mainContent = mainContent.replace(/<\/?thank>/gi, '').trim();
-        }
+        // Remove <thank> tags completely (don't display outside)
+        mainContent = mainContent.replace(/<\/?thank>/gi, '').trim();
 
-        // 2. Build Thank Text (outside dialog box)
-        const thankText = thankContent ? `<div class="thank-text">${thankContent}</div>` : '';
-
-        // 3. Build Think Dropdown (collapsible)
+        // 2. Build Think Dropdown (collapsible)
         const thinkBox = thinkContent ? `
             <details class="think-box">
                 <summary class="think-summary">🧠 AI Thinking Process</summary>
@@ -137,11 +129,10 @@ class ChatManager {
             </details>
         ` : '';
 
-        // 4. Build message
+        // 3. Build message
         messageDiv.innerHTML = `
             ${avatar}
             <div class="dialog-container">
-                ${thankText}
                 ${thinkBox}
                 <div class="dialog-box">
                     ${this.formatContentNoThank(mainContent)}
