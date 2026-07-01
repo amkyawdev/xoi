@@ -205,6 +205,11 @@ Core Capabilities:
 - Multi-step problem solving
 - File operations and analysis
 
+Important:
+- Do NOT use <thank> tags in your response
+- Only use <think> tags for your thinking process
+- Respond directly with your answer
+
 Guidelines:
 - Be helpful, harmless, and honest
 - Think step by step for complex problems
