@@ -1,5 +1,7 @@
 """LLM router for selecting appropriate model"""
 
+import json
+from pathlib import Path
 from typing import Any
 
 from llm.models import ModelConfig
@@ -8,33 +10,29 @@ from llm.models import ModelConfig
 class LLM Router:
     """Routes requests to appropriate LLM based on requirements"""
     
-    def __init__(self):
-        self.models: dict[str, ModelConfig] = {
-            "gpt-4": ModelConfig(
-                name="gpt-4",
-                provider="openai",
-                context_length=8192,
-                capabilities=["chat", "function_calling", "vision"]
-            ),
-            "gpt-3.5-turbo": ModelConfig(
-                name="gpt-3.5-turbo",
-                provider="openai",
-                context_length=16385,
-                capabilities=["chat", "function_calling"]
-            ),
-            "claude-3-opus": ModelConfig(
-                name="claude-3-opus",
-                provider="anthropic",
-                context_length=200000,
-                capabilities=["chat", "vision", "long_context"]
-            ),
-            "mixtral-8x7b": ModelConfig(
-                name="mixtral-8x7b",
-                provider="openrouter",
-                context_length=32768,
-                capabilities=["chat"]
-            ),
-        }
+    def __init__(self, models_file: str | None = None):
+        self.models: dict[str, ModelConfig] = {}
+        
+        # Load models from JSON config
+        if models_file is None:
+            models_file = Path(__file__).parent.parent / "config" / "models.json"
+        
+        if Path(models_file).exists():
+            with open(models_file) as f:
+                data = json.load(f)
+                for m in data.get("models", []):
+                    config = ModelConfig(
+                        name=m["name"],
+                        provider=m["provider"],
+                        context_length=m.get("context_length", 8192),
+                        capabilities=m.get("capabilities", ["chat"]),
+                        cost_per_1k_input=m.get("cost_per_1k_input", 0),
+                        cost_per_1k_output=m.get("cost_per_1k_output", 0)
+                    )
+                    self.models[config.name] = config
+        else:
+            # Fallback to default free models
+            self._set_default_models()
     
     def select_model(
         self,
@@ -58,7 +56,7 @@ class LLM Router:
             candidates = [m for m in candidates if m.context_length >= context_length]
         
         if not candidates:
-            return "gpt-3.5-turbo"  # Default fallback
+            return "openrouter/free"  # Default fallback (free)
         
         # Select based on preferences
         if prefer_fast:
@@ -80,10 +78,10 @@ class LLM Router:
 
 
 # Global router
-_router: LLM Router | None = None
+_router: "LLMRouter" | None = None
 
 
-def get_router() -> LLMRouter:
+def get_router() -> "LLMRouter":
     """Get or create global LLM router"""
     global _router
     if _router is None:

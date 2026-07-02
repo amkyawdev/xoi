@@ -14,11 +14,11 @@ class LLMClient:
     def __init__(
         self,
         api_key: str | None = None,
-        default_model: str = "gpt-4",
+        default_model: str = "nvidia/nemotron-3-ultra-550b-a55b:free",
         temperature: float = 0.7,
         max_tokens: int = 4096
     ):
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY") or os.getenv("OPENROUTER_API_KEY", "")
+        self.api_key = api_key or os.getenv("OPENROUTER_API_KEY") or os.getenv("OPENAI_API_KEY", "")
         self.default_model = default_model
         self.temperature = temperature
         self.max_tokens = max_tokens

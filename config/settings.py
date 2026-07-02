@@ -41,9 +41,9 @@ class Settings(BaseSettings):
     crawl_timeout_seconds: int = 30
     max_concurrent_crawls: int = 10
     
-    # LLM
-    default_model: str = "gpt-4"
-    fallback_model: str = "gpt-3.5-turbo"
+    # LLM (FREE MODELS - No cost!)
+    default_model: str = "nvidia/nemotron-3-ultra-550b-a55b:free"
+    fallback_model: str = "qwen/qwen3-coder:free"
     temperature: float = 0.7
     max_tokens: int = 4096
     

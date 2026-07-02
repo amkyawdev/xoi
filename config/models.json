@@ -1,52 +1,184 @@
 {
   "models": [
     {
-      "name": "gpt-4",
-      "provider": "openai",
-      "context_length": 8192,
-      "capabilities": ["chat", "function_calling", "vision"],
-      "cost_per_1k_input": 0.03,
-      "cost_per_1k_output": 0.06
-    },
-    {
-      "name": "gpt-3.5-turbo",
-      "provider": "openai",
-      "context_length": 16385,
-      "capabilities": ["chat", "function_calling"],
-      "cost_per_1k_input": 0.001,
-      "cost_per_1k_output": 0.002
-    },
-    {
-      "name": "claude-3-opus",
-      "provider": "anthropic",
-      "context_length": 200000,
-      "capabilities": ["chat", "vision", "long_context"],
-      "cost_per_1k_input": 0.015,
-      "cost_per_1k_output": 0.075
-    },
-    {
-      "name": "claude-3-sonnet",
-      "provider": "anthropic",
-      "context_length": 200000,
-      "capabilities": ["chat", "vision", "long_context"],
-      "cost_per_1k_input": 0.003,
-      "cost_per_1k_output": 0.015
-    },
-    {
-      "name": "mixtral-8x7b",
+      "name": "openrouter/free",
       "provider": "openrouter",
+      "context_length": 200000,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Free Models Router - Auto-selects free model"
+    },
+    {
+      "name": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "provider": "nvidia",
+      "context_length": 1000000,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "NVIDIA Nemotron 3 Ultra 550B - Best free general model"
+    },
+    {
+      "name": "nvidia/nemotron-3-super-120b-a12b:free",
+      "provider": "nvidia",
+      "context_length": 1000000,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "NVIDIA Nemotron 3 Super 120B"
+    },
+    {
+      "name": "google/gemma-4-31b-it:free",
+      "provider": "google",
+      "context_length": 262144,
+      "capabilities": ["chat", "vision", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Google Gemma 4 31B - Fast & capable"
+    },
+    {
+      "name": "google/gemma-4-26b-a4b-it:free",
+      "provider": "google",
+      "context_length": 262144,
+      "capabilities": ["chat", "vision", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Google Gemma 4 26B A4B"
+    },
+    {
+      "name": "qwen/qwen3-next-80b-a3b-instruct:free",
+      "provider": "qwen",
+      "context_length": 262144,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Qwen3 Next 80B A3B - Strong coding"
+    },
+    {
+      "name": "qwen/qwen3-coder:free",
+      "provider": "qwen",
+      "context_length": 1048576,
+      "capabilities": ["chat", "tools", "coding"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Qwen3 Coder 480B - Best free code model, 1M context"
+    },
+    {
+      "name": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "provider": "nvidia",
+      "context_length": 256000,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "NVIDIA Nemotron 3 Nano 30B A3B"
+    },
+    {
+      "name": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "provider": "nvidia",
+      "context_length": 256000,
+      "capabilities": ["chat", "vision", "tools", "reasoning"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "NVIDIA Nemotron 3 Nano Omni - Multimodal reasoning"
+    },
+    {
+      "name": "nvidia/nemotron-nano-12b-v2-vl:free",
+      "provider": "nvidia",
+      "context_length": 128000,
+      "capabilities": ["chat", "vision", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "NVIDIA Nemotron Nano 12B 2 VL - Vision support"
+    },
+    {
+      "name": "nvidia/nemotron-nano-9b-v2:free",
+      "provider": "nvidia",
+      "context_length": 128000,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "NVIDIA Nemotron Nano 9B V2"
+    },
+    {
+      "name": "openai/gpt-oss-120b:free",
+      "provider": "openai",
+      "context_length": 131072,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "OpenAI GPT-OSS 120B"
+    },
+    {
+      "name": "openai/gpt-oss-20b:free",
+      "provider": "openai",
+      "context_length": 131072,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "OpenAI GPT-OSS 20B - Fast inference"
+    },
+    {
+      "name": "meta-llama/llama-3.3-70b-instruct:free",
+      "provider": "meta",
+      "context_length": 131072,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Meta Llama 3.3 70B Instruct"
+    },
+    {
+      "name": "poolside/laguna-m.1:free",
+      "provider": "poolside",
+      "context_length": 262144,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Poolside Laguna M.1"
+    },
+    {
+      "name": "poolside/laguna-xs.2:free",
+      "provider": "poolside",
+      "context_length": 262144,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Poolside Laguna XS.2"
+    },
+    {
+      "name": "cohere/north-mini-code:free",
+      "provider": "cohere",
+      "context_length": 256000,
+      "capabilities": ["chat", "tools", "coding"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Cohere North Mini Code - Coding focused"
+    },
+    {
+      "name": "nousresearch/hermes-3-llama-3.1-405b:free",
+      "provider": "nousresearch",
+      "context_length": 131072,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Nous Hermes 3 405B Instruct"
+    },
+    {
+      "name": "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
+      "provider": "cognitivecomputations",
       "context_length": 32768,
       "capabilities": ["chat"],
-      "cost_per_1k_input": 0.00024,
-      "cost_per_1k_output": 0.00024
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Dolphin Mistral 24B - Uncensored"
     },
     {
-      "name": "llama-3-70b",
-      "provider": "openrouter",
-      "context_length": 8192,
-      "capabilities": ["chat"],
-      "cost_per_1k_input": 0.00035,
-      "cost_per_1k_output": 0.00035
+      "name": "meta-llama/llama-3.2-3b-instruct:free",
+      "provider": "meta",
+      "context_length": 131072,
+      "capabilities": ["chat", "tools"],
+      "cost_per_1k_input": 0,
+      "cost_per_1k_output": 0,
+      "description": "Meta Llama 3.2 3B Instruct - Fast & lightweight"
     }
   ]
 }
