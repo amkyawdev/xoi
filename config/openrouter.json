@@ -1,0 +1,16 @@
+{
+  "provider": "openrouter",
+  "base_url": "https://openrouter.ai/api/v1",
+  "models": [
+    "openai/gpt-4",
+    "openai/gpt-3.5-turbo",
+    "anthropic/claude-3-opus",
+    "anthropic/claude-3-sonnet",
+    "mistralai/mixtral-8x7b",
+    "meta-llama/llama-3-70b-instruct"
+  ],
+  "default_headers": {
+    "HTTP-Referer": "https://webagent.dev",
+    "X-Title": "Web Agent Platform"
+  }
+}
