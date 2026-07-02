@@ -1,309 +1,183 @@
 <!DOCTYPE html>
-<html lang="my">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AmkyawDev AI - Loading</title>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmkyawDev AI - Web Agent Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        
-        .loader-container {
-            text-align: center;
-            color: white;
-            padding: 20px;
-        }
-        
-        /* Logo */
-        .loader-logo {
-            width: 140px;
-            height: 140px;
-            margin-bottom: 30px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        .loader-logo svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
-        }
-        
-        /* Text */
-        .loader-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            animation: fadeInUp 0.8s ease forwards;
-        }
-        
-        .loader-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 50px;
-            animation: fadeInUp 0.8s ease 0.2s forwards;
-            opacity: 0;
-        }
-        
-        /* Spinner */
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 30px;
-            position: relative;
-        }
-        
-        .loading-spinner::before,
-        .loading-spinner::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-        }
-        
-        .loading-spinner::before {
-            width: 100%;
-            height: 100%;
-            border: 4px solid rgba(255,255,255,0.2);
-            top: 0;
-            left: 0;
-        }
-        
-        .loading-spinner::after {
-            width: 100%;
-            height: 100%;
-            border: 4px solid transparent;
-            border-top-color: white;
-            top: 0;
-            left: 0;
-            animation: spin 1s linear infinite;
-        }
-        
-        /* Status */
-        .status-text {
-            font-size: 1rem;
-            opacity: 0.85;
-            margin-bottom: 40px;
-        }
-        
-        /* Progress Bar */
-        .progress-container {
-            width: 200px;
-            height: 4px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: white;
-            border-radius: 2px;
-            animation: progress 2s ease-in-out infinite;
-        }
-        
-        /* Dots Animation */
-        .dots::after {
-            content: '';
-            animation: dots 1.5s steps(4, end) infinite;
-        }
-        
-        /* Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { left: 20%; animation-delay: 0.5s; }
-        .particle:nth-child(3) { left: 30%; animation-delay: 1s; }
-        .particle:nth-child(4) { left: 40%; animation-delay: 1.5s; }
-        .particle:nth-child(5) { left: 50%; animation-delay: 2s; }
-        .particle:nth-child(6) { left: 60%; animation-delay: 0.3s; }
-        .particle:nth-child(7) { left: 70%; animation-delay: 0.8s; }
-        .particle:nth-child(8) { left: 80%; animation-delay: 1.3s; }
-        .particle:nth-child(9) { left: 90%; animation-delay: 1.8s; }
-        
-        /* Animations */
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes progress {
-            0% { width: 0%; margin-left: 0; }
-            50% { width: 60%; margin-left: 20%; }
-            100% { width: 0%; margin-left: 100%; }
-        }
-        
-        @keyframes dots {
-            0% { content: ''; }
-            25% { content: '.'; }
-            50% { content: '..'; }
-            75% { content: '...'; }
-        }
-        
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1);
-                opacity: 0;
-            }
-        }
-        
-        /* Skip Button */
-        .skip-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(255,255,255,0.2);
-            border: 2px solid rgba(255,255,255,0.4);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        .skip-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--bg:#0a0a0f;--surface:#12121a;--card:#1a1a24;--border:#2a2a3a;--text:#f1f5f9;--text-sec:#94a3b8;--text-mut:#64748b;--grad1:#6366f1;--grad2:#8b5cf6;--grad3:#ec4899;--cyan:#22d3ee;--green:#22c55e}
+        body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+        .navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,15,.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+        .nav-brand{display:flex;align-items:center;gap:12px}
+        .brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--grad1),var(--grad2));border-radius:12px;display:flex;align-items:center;justify-content:center}
+        .brand-icon i{color:#fff}
+        .brand-text h1{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--text),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-text span{font-size:11px;color:var(--text-mut)}
+        .nav-links{display:flex;align-items:center;gap:32px}
+        .nav-links a{color:var(--text-sec);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+        .nav-links a:hover{color:var(--text)}
+        .nav-actions{display:flex;align-items:center;gap:12px}
+        .btn{padding:10px 20px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+        .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+        .btn-outline:hover{background:var(--card);border-color:var(--grad1)}
+        .btn-primary{background:linear-gradient(135deg,var(--grad1),var(--grad2));border:none;color:#fff}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(99,102,241,.3)}
+        .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+        .hero-bg{position:absolute;inset:0;overflow:hidden}
+        .hero-grad{position:absolute;border-radius:50%;filter:blur(120px);opacity:.4;animation:float 20s ease-in-out infinite}
+        .hero-grad-1{width:800px;height:800px;background:var(--grad1);top:-400px;left:-200px}
+        .hero-grad-2{width:800px;height:800px;background:var(--grad3);bottom:-400px;right:-200px;animation-delay:-10s}
+        @keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,50px) scale(1.1)}}
+        .hero-content{text-align:center;max-width:900px;position:relative;z-index:1}
+        .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);padding:8px 16px;border-radius:50px;font-size:13px;color:var(--text-sec);margin-bottom:24px}
+        .badge-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+        .hero-title{font-size:clamp(40px,8vw,72px);font-weight:800;line-height:1.1;margin-bottom:24px;background:linear-gradient(135deg,var(--text) 0%,var(--cyan) 50%,var(--grad2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .hero-subtitle{font-size:18px;color:var(--text-sec);line-height:1.7;max-width:600px;margin:0 auto 40px}
+        .hero-actions{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+        .btn-large{padding:16px 32px;font-size:16px;border-radius:14px}
+        .hero-stats{display:flex;justify-content:center;gap:48px;margin-top:64px;flex-wrap:wrap}
+        .stat-item{text-align:center}
+        .stat-value{font-size:32px;font-weight:700;background:linear-gradient(135deg,var(--grad1),var(--grad3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .stat-label{font-size:13px;color:var(--text-mut);margin-top:4px}
+        .features{padding:100px 24px;max-width:1200px;margin:0 auto}
+        .section-header{text-align:center;margin-bottom:64px}
+        .section-tag{display:inline-block;background:linear-gradient(135deg,var(--grad1),var(--grad2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+        .section-title{font-size:clamp(28px,5vw,40px);font-weight:700;margin-bottom:16px}
+        .section-desc{font-size:16px;color:var(--text-sec);max-width:600px;margin:0 auto}
+        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+        .feature-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;transition:all .3s}
+        .feature-card:hover{border-color:var(--grad1);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+        .feature-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+        .feature-icon.purple{background:linear-gradient(135deg,var(--grad1),var(--grad2))}
+        .feature-icon.cyan{background:linear-gradient(135deg,var(--cyan),#06b6d4)}
+        .feature-icon.pink{background:linear-gradient(135deg,var(--grad3),#f472b6)}
+        .feature-icon.green{background:linear-gradient(135deg,var(--green),#10b981)}
+        .feature-icon i{color:#fff;width:28px;height:28px}
+        .feature-card h3{font-size:18px;font-weight:600;margin-bottom:12px}
+        .feature-card p{font-size:14px;color:var(--text-sec);line-height:1.7}
+        .models{padding:100px 24px;background:var(--surface)}
+        .models-content{max-width:1200px;margin:0 auto}
+        .models-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:48px}
+        .model-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .3s}
+        .model-card:hover{border-color:var(--grad1);transform:translateY(-2px)}
+        .model-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+        .model-provider{font-size:12px;color:var(--text-mut);text-transform:uppercase;letter-spacing:.5px}
+        .model-badge{background:rgba(34,197,94,.15);color:var(--green);font-size:11px;padding:4px 10px;border-radius:50px;font-weight:600}
+        .model-name{font-size:16px;font-weight:600;margin-bottom:8px}
+        .model-context{font-size:13px;color:var(--text-sec);display:flex;align-items:center;gap:6px}
+        .cta{padding:100px 24px;text-align:center}
+        .cta-box{max-width:800px;margin:0 auto;background:linear-gradient(135deg,var(--card) 0%,var(--surface) 100%);border:1px solid var(--border);border-radius:32px;padding:64px 40px;position:relative;overflow:hidden}
+        .cta-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--grad1),var(--grad2),var(--grad3))}
+        .cta-title{font-size:clamp(24px,4vw,36px);font-weight:700;margin-bottom:16px}
+        .cta-desc{font-size:16px;color:var(--text-sec);margin-bottom:32px}
+        .footer{padding:40px 24px;border-top:1px solid var(--border);text-align:center}
+        .footer-text{font-size:13px;color:var(--text-mut)}
+        .footer-links{display:flex;justify-content:center;gap:24px;margin-top:16px}
+        .footer-links a{color:var(--text-sec);text-decoration:none;font-size:13px;transition:color .2s}
+        .footer-links a:hover{color:var(--grad1)}
+        @media(max-width:768px){.nav-links{display:none}.hero-stats{gap:32px}.features-grid,.models-grid{grid-template-columns:1fr}.cta-box{padding:40px 24px}}
     </style>
 </head>
 <body>
-    <!-- Particles Background -->
-    <div class="particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
-    
-    <div class="loader-container">
-        <!-- Logo SVG -->
-        <div class="loader-logo">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="45" fill="white" fill-opacity="0.15" stroke="white" stroke-width="2"/>
-                <path d="M25 40L50 20L75 40V60L50 80L25 60V40Z" fill="white" fill-opacity="0.3" stroke="white" stroke-width="2"/>
-                <path d="M50 20V80" stroke="white" stroke-width="2"/>
-                <path d="M25 40L75 60M75 40L25 60" stroke="white" stroke-width="2"/>
-                <circle cx="50" cy="50" r="10" fill="white"/>
-            </svg>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="brand-icon"><i data-lucide="bot" width="22" height="22"></i></div>
+            <div class="brand-text"><h1>AmkyawDev AI</h1><span>Web Agent Platform</span></div>
         </div>
-        
-        <!-- Title -->
-        <h1 class="loader-title">AmkyawDev AI</h1>
-        <p class="loader-subtitle">Intelligent Assistant</p>
-        
-        <!-- Loading Spinner -->
-        <div class="loading-spinner"></div>
-        
-        <!-- Status Text -->
-        <p class="status-text" id="statusText">
-            Initializing<span class="dots"></span>
-        </p>
-        
-        <!-- Progress Bar -->
-        <div class="progress-container">
-            <div class="progress-bar"></div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#models">Free Models</a>
+            <a href="frontend/pages/chat.html">Demo</a>
+            <a href="frontend/pages/docs.html">Documentation</a>
         </div>
-    </div>
-    
-    <!-- Skip Button -->
-    <button class="skip-btn" onclick="skipLoading()">
-        Skip <i class="fas fa-arrow-right"></i>
-    </button>
+        <div class="nav-actions">
+            <a href="frontend/pages/login.html" class="btn btn-outline"><i data-lucide="log-in" width="16" height="16"></i>Sign In</a>
+            <a href="frontend/pages/register.html" class="btn btn-primary">Get Started</a>
+        </div>
+    </nav>
 
-    <script>
-        // Loading messages
-        const messages = [
-            'Initializing AI models...',
-            'Loading capabilities...',
-            'Preparing interface...',
-            'Almost ready...'
-        ];
-        
-        let messageIndex = 0;
-        const statusText = document.getElementById('statusText');
-        
-        // Update status message
-        setInterval(() => {
-            statusText.innerHTML = messages[messageIndex % messages.length] + '<span class="dots"></span>';
-            messageIndex++;
-        }, 1500);
-        
-        // Skip loading and redirect
-        function skipLoading() {
-            window.location.href = 'frontend/pages/index.html';
-        }
-        
-        // Auto redirect after 4 seconds
-        setTimeout(() => {
-            skipLoading();
-        }, 4000);
-    </script>
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="hero-grad hero-grad-1"></div>
+            <div class="hero-grad hero-grad-2"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge"><span class="badge-dot"></span>Now Free - Powered by OpenRouter</div>
+            <h1 class="hero-title">Build AI Agents<br>That Work for You</h1>
+            <p class="hero-subtitle">A powerful web agent platform with free AI models, intelligent crawling, RAG capabilities, and modern tools. No API costs - just pure productivity.</p>
+            <div class="hero-actions">
+                <a href="frontend/pages/chat.html" class="btn btn-primary btn-large"><i data-lucide="message-circle"></i>Start Chatting Free</a>
+                <a href="#features" class="btn btn-outline btn-large"><i data-lucide="sparkles"></i>Explore Features</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item"><div class="stat-value">20+</div><div class="stat-label">Free AI Models</div></div>
+                <div class="stat-item"><div class="stat-value">1M</div><div class="stat-label">Max Context</div></div>
+                <div class="stat-item"><div class="stat-value">$0</div><div class="stat-label">API Cost</div></div>
+                <div class="stat-item"><div class="stat-value">24/7</div><div class="stat-label">Availability</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="section-header">
+            <span class="section-tag">Capabilities</span>
+            <h2 class="section-title">Everything You Need</h2>
+            <p class="section-desc">A complete toolkit for building, deploying, and scaling AI agents</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card"><div class="feature-icon purple"><i data-lucide="brain"></i></div><h3>AI Agents</h3><p>Intelligent agents with planning, reasoning, and memory. Chain multiple tasks together and automate complex workflows.</p></div>
+            <div class="feature-card"><div class="feature-icon cyan"><i data-lucide="globe"></i></div><h3>Web Crawling</h3><p>Advanced web scraping with Playwright browser automation. Extract content, follow links, and build knowledge bases.</p></div>
+            <div class="feature-card"><div class="feature-icon pink"><i data-lucide="database"></i></div><h3>RAG System</h3><p>Retrieval-augmented generation with ChromaDB vector storage. Enable your agents with custom knowledge bases.</p></div>
+            <div class="feature-card"><div class="feature-icon green"><i data-lucide="zap"></i></div><h3>Free Models</h3><p>Access 20+ free AI models from OpenRouter. No API costs, no credit card required. Just pure AI power.</p></div>
+            <div class="feature-card"><div class="feature-icon purple"><i data-lucide="code"></i></div><h3>Code Generation</h3><p>Generate, debug, and explain code in multiple languages. Specialized models for software development tasks.</p></div>
+            <div class="feature-card"><div class="feature-icon cyan"><i data-lucide="shield"></i></div><h3>Enterprise Ready</h3><p>JWT auth, rate limiting, encryption, and monitoring. Built with security and scalability in mind.</p></div>
+        </div>
+    </section>
+
+    <section class="models" id="models">
+        <div class="models-content">
+            <div class="section-header">
+                <span class="section-tag">Free Models</span>
+                <h2 class="section-title">Zero Cost AI Power</h2>
+                <p class="section-desc">All models are completely free to use. No hidden fees, no rate limits.</p>
+            </div>
+            <div class="models-grid">
+                <div class="model-card"><div class="model-header"><span class="model-provider">NVIDIA</span><span class="model-badge">FREE</span></div><h4 class="model-name">Nemotron 3 Ultra 550B</h4><div class="model-context"><i data-lucide="maximize-2" width="14" height="14"></i>1M context window</div></div>
+                <div class="model-card"><div class="model-header"><span class="model-provider">Google</span><span class="model-badge">FREE</span></div><h4 class="model-name">Gemma 4 31B</h4><div class="model-context"><i data-lucide="maximize-2" width="14" height="14"></i>262K context window</div></div>
+                <div class="model-card"><div class="model-header"><span class="model-provider">Qwen</span><span class="model-badge">FREE</span></div><h4 class="model-name">Qwen3 Coder 480B</h4><div class="model-context"><i data-lucide="maximize-2" width="14" height="14"></i>1M context + Coding</div></div>
+                <div class="model-card"><div class="model-header"><span class="model-provider">Poolside</span><span class="model-badge">FREE</span></div><h4 class="model-name">Laguna M.1</h4><div class="model-context"><i data-lucide="maximize-2" width="14" height="14"></i>262K context window</div></div>
+                <div class="model-card"><div class="model-header"><span class="model-provider">Meta</span><span class="model-badge">FREE</span></div><h4 class="model-name">Llama 3.3 70B</h4><div class="model-context"><i data-lucide="maximize-2" width="14" height="14"></i>131K context window</div></div>
+                <div class="model-card"><div class="model-header"><span class="model-provider">OpenRouter</span><span class="model-badge">AUTO</span></div><h4 class="model-name">Free Router</h4><div class="model-context"><i data-lucide="shuffle" width="14" height="14"></i>Auto-select best free model</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="cta-box">
+            <h2 class="cta-title">Ready to Build?</h2>
+            <p class="cta-desc">Start using free AI models today. No API key required, no credit card needed.</p>
+            <div class="hero-actions">
+                <a href="frontend/pages/chat.html" class="btn btn-primary btn-large"><i data-lucide="rocket"></i>Launch App</a>
+                <a href="frontend/pages/docs.html" class="btn btn-outline btn-large"><i data-lucide="book-open"></i>Read Docs</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p class="footer-text">Built with by <strong>AmkyawDev</strong> - Powered by OpenRouter</p>
+        <div class="footer-links">
+            <a href="frontend/pages/docs.html">Documentation</a>
+            <a href="frontend/pages/about.html">About</a>
+            <a href="https://github.com/amkyawdev/xoi" target="_blank">GitHub</a>
+        </div>
+    </footer>
+
+    <script>document.addEventListener('DOMContentLoaded',()=>{lucide.createIcons()});</script>
 </body>
 </html>
