@@ -3,7 +3,7 @@
 import pytest
 
 from llm.models import Message, ModelConfig
-from llm.router import LLM Router
+from llm.router import LLMRouter
 
 
 def test_message_creation():
@@ -26,13 +26,13 @@ def test_model_config():
 
 def test_router_select_model():
     """Test model selection"""
-    router = LLM Router()
+    router = LLMRouter()
     model = router.select_model()
     assert model is not None
 
 
 def test_router_filter_by_capability():
     """Test filtering by capability"""
-    router = LLM Router()
+    router = LLMRouter()
     model = router.select_model(capabilities=["vision"])
     assert "vision" in router.get_model(model).capabilities

@@ -7,7 +7,7 @@ from typing import Any
 from llm.models import ModelConfig
 
 
-class LLM Router:
+class LLMRouter:
     """Routes requests to appropriate LLM based on requirements"""
     
     def __init__(self, models_file: str | None = None):
@@ -85,5 +85,5 @@ def get_router() -> "LLMRouter":
     """Get or create global LLM router"""
     global _router
     if _router is None:
-        _router = LLM Router()
+        _router = LLMRouter()
     return _router

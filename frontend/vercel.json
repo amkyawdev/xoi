@@ -2,6 +2,10 @@
   "version": 2,
   "builds": [
     {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "pages/**/*.html",
       "use": "@vercel/static"
     },
@@ -17,7 +21,7 @@
   "routes": [
     {
       "src": "/",
-      "dest": "/pages/index.html"
+      "dest": "/index.html"
     },
     {
       "src": "/about",
@@ -30,6 +34,10 @@
     {
       "src": "/skills",
       "dest": "/pages/skills.html"
+    },
+    {
+      "src": "/chat",
+      "dest": "/pages/chat.html"
     },
     {
       "src": "/login",
